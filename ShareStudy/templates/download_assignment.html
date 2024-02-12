@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Assignment</title>
+</head>
+<body>
+    <h2>Download Assignment</h2>
+    <p><strong>Assignment:</strong> {{ submission.assignment.title }}</p>
+    <p><strong>Student:</strong> {{ submission.student.username }}</p>
+    <a href="{{ submission.document.url }}" download>Download Assignment</a>
+    <a href="{% url 'list_submissions' %}">Back to Submissions</a>
+</body>
+</html>

@@ -1,0 +1,143 @@
+{% extends "adminnav.html" %}
+{% load static %}
+
+    
+
+{% block styles %}
+           <style>
+            table {
+                width: 70%;
+                border-collapse: collapse;
+                margin-left: 280px;
+            }
+        
+            th, td {
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: left;
+            }
+        
+            th {
+                background-color: #333;
+                color: #fff;
+            }
+        
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+        
+            /* Reduce padding and font size for email cell */
+            td:nth-child(2) {
+                padding: 8px; /* Adjust the padding size as needed */
+                font-size: 14px; /* Adjust the font size as needed */
+            }
+        
+            .filter-container {
+                text-align: center;
+                margin: 20px 0;
+            }
+        
+            select {
+                padding: 8px;
+            }
+        
+            button {
+                padding: 8px 16px;
+                background-color: #333;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+        {% endblock styles %}
+
+                    
+                    {% block body %}
+                    <div><center><br><br><br>
+                        <body>
+                        </center><br><br>
+                        <form action="" method="GET">
+                        <div class="filter-container">
+                            <select id="roleFilter" name="role">
+                                <option value="">All Roles</option>
+                                {% comment %} <option value="ADMIN" {% if role_filter == 'ADMIN' %}selected{% endif %}></option> {% endcomment %}
+                                <option value="STUDENT" {% if role_filter == 'STUDENT' %}selected{% endif %}>Student</option>
+                                <option value="TEACHER" {% if role_filter == 'TEACHER' %}selected{% endif %}>Teacher</option>
+                            </select>
+                            
+                            
+                            
+                            <button id="filterButton" type="submit">Filter</button>
+                        </form>
+                        </div><br><br>
+                        <table>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email ID</th>
+                
+                                <th>status</th>
+                               
+                            </tr>
+                            <tbody>
+                                {% for Users in User_profiles %}
+                                    {% if not Users.is_superuser %}
+                                        <tr>
+                                            <td>{{ Users.first_name }}</td>
+                                            <td>{{ Users.last_name }}</td>
+                                            <td>{{ Users.email }}</td>
+                                        
+                                            <td>{% if Users.is_active %}
+                                                <form method="post" action="{% url 'deactivate_user' Users.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit">Deactivate</button>
+                                                </form>
+                                            {% else %}
+                                                <form method="post" action="{% url 'activate_user' Users.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit">Activate</button>
+                                                </form>
+                                            {% endif %}
+                                            
+                                            </td>
+                                            
+                                                {% if Users.role != "ADMIN" %}
+                                                    
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                            <!-- Add more rows as needed without the "Role" field -->
+                        </table>
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+                        
+                            $(document).ready(function () {
+                                const roleFilter = $('#roleFilter');
+                                const rows = $('table tbody tr');
+                        
+                                roleFilter.on('change', function () {
+                                    const selectedRole = roleFilter.val();
+                                    rows.each(function () {
+                                        const roleCell = $(this).find('td').eq(2); // Index 2 is the position of the "Role" cell
+                                        const userRole = roleCell.text().trim();
+                                        
+                                        if (selectedRole === '' || userRole === selectedRole) {
+                                            $(this).show();
+                                        } else {
+                                            $(this).hide();
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        
+                    
+                    </div>
+                    {% endblock body %}
+  
+
+</body>
+
+</html>

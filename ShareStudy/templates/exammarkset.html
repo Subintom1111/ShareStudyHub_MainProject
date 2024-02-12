@@ -1,0 +1,31 @@
+{% extends 'adminnav.html' %}
+
+{% block body %}
+{% block content %}<br><br><br>
+<h2 style="text-align: center;">Quiz </h2>
+<div class="container">
+  <form method="POST" autocomplete="off" style="margin: 100px; margin-top: 0;">
+
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="course_name">Exam Name</label>
+        <input type="text" name="course_name" class="form-control" placeholder="Example: Software Engineering">
+        <br><br>
+        <label for="question_number">Total Questions</label>
+        <input type="text" name="question_number" class="form-control" placeholder="Example: 50" >
+        <br><br>
+        <label for="total_marks">Total Marks</label>
+        <input type="text" name="total_marks" class="form-control" placeholder="Example: 100">
+        <br><br>
+        <label for="exam_time">Exam Time</label>
+        <input type="text" name="exam_time" class="form-control" placeholder="Example: 2 hours">
+
+    </div>
+    <br><br>
+    <button type="submit" class="btn btn-success" style="border-radius: 0;">Add Course Info</button>
+</form>
+
+</div>
+{% endblock content %}
+{% endblock body %}
+

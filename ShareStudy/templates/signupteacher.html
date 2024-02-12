@@ -1,0 +1,268 @@
+{% extends 'nav.html' %}
+{% block title %}
+ShareStudy Hub
+{% endblock title %}
+{% block form %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareStudy Hub |  TEACHER SIGNUP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url('signupimg.jpg'); /* Replace with your own image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        h2 {
+            margin-top: 50px;
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .form-group select#department {
+            width: 80%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>SIGNUP FOR TEACHER</h2><br>
+
+        {% for message in messages %}
+
+                  <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                  <strong>{{message}}</strong> 
+                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   </div>
+
+               {% endfor %}
+        <form id="signup-form" action="http://127.0.0.1:8000/signupteacher/" method="post">  {% csrf_token %}
+            <div class="form-group">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" placeholder=" Enter the First Name :"required onchange="validateFirstName()"><br>
+                <span id="first_name_error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" placeholder=" Enter the Last Name :"required onchange="validateLastName()"><br>
+                <span id="last_name_error" class="error-message"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder=" Enter the Email :" required onchange="validateEmail()"><br>
+                <span id="email_error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder=" Enter the Username :" required onchange="validateUsername()"><br>
+                <span id="username-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder=" Enter the Password :" required onchange="validatePassword()"><br>
+                <span id="password_error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder=" Enter to Confirm Password : "required onchange="validateConfirmPassword()"><br>
+                <span id="confirm_password_error" class="error-message"></span>
+            </div>
+            
+                <button type="submit" class="submit-btn" onclick="validateSignup()">Sign Up</button>
+                <span id="success-message" class="success-message"></span>
+        
+                <p class="signup">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </form>
+    </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+          var firstName = document.getElementById("first_name");
+          var lastName = document.getElementById("last_name");
+          var username = document.getElementById("username");
+          var email = document.getElementById("email");
+          var password = document.getElementById("password");
+          var confirmPassword = document.getElementById("confirm_password");
+        
+        
+          var firstNameError = document.getElementById("first_name_error");
+          var lastNameError = document.getElementById("last_name_error");
+          var usernameError = document.getElementById("username-error");
+          var emailError = document.getElementById("email_error");
+          var passwordError = document.getElementById("password_error");
+          var confirmPasswordError = document.getElementById("confirm_password_error");
+        
+          // Function to display error messages
+          function displayErrorMessage(fieldElement, errorElement, message) {
+            fieldElement.classList.add("is-invalid");
+            errorElement.textContent = message;
+          }
+        
+          // Function to clear error messages
+          function clearErrorMessage(fieldElement, errorElement) {
+            fieldElement.classList.remove("is-invalid");
+            errorElement.textContent = "";
+          }
+        
+          // Event listeners for real-time validation
+          firstName.addEventListener("input", function () {
+            clearErrorMessage(firstName, firstNameError);
+            if (firstName.value.trim() === "") {
+              displayErrorMessage(firstName, firstNameError, "First name cannot be empty.");
+            } else if (firstName.value.includes(" ")) {
+              displayErrorMessage(firstName, firstNameError, "First name cannot contain spaces.");
+            } else if (!/^[A-Za-z]+$/.test(firstName.value)) {
+              displayErrorMessage(firstName, firstNameError, "First name must contain only characters.");
+            }
+          });
+
+          username.addEventListener("input", function () {
+        clearErrorMessage(username, usernameError);
+        const value = username.value.trim();
+
+        if (value === "") {
+            username.classList.add("is-invalid");
+            usernameError.textContent = "Username cannot be empty.";
+        } else if (value.includes(" ")) {
+            username.classList.add("is-invalid");
+            usernameError.textContent = "Username cannot contain spaces.";
+        } else if (/[A-Z]/.test(value)) {
+            username.classList.add("is-invalid");
+            usernameError.textContent = "Username cannot contain uppercase letters.";
+        } 
+        else if (/[0-9]/.test(value)) {
+            username.classList.add("is-invalid");
+            usernameError.textContent = "Username cannot contain Numbers.";
+        }else {
+            clearErrorMessage(username, usernameError);
+        }
+    });
+        
+          lastName.addEventListener("input", function () {
+            clearErrorMessage(lastName, lastNameError);
+            if (lastName.value.trim() === "") {
+              displayErrorMessage(lastName, lastNameError, "Last name cannot be empty.");
+            } else if (!/^[A-Za-z]+$/.test(lastName.value)) {
+              displayErrorMessage(lastName, lastNameError, "Last name must contain only characters.");
+            }
+          });
+      
+          email.addEventListener("input", function () {
+            clearErrorMessage(email, emailError);
+            const emailRegex = /^[a-z0-9]+@[^\s@]+\.[^\s@]+$/; // Allow lowercase letters, numbers, and any domain name
+            if (email.value.trim() === "") {
+              displayErrorMessage(email, emailError, "Email cannot be empty.");
+            } else if (!emailRegex.test(email.value)) {
+              displayErrorMessage(email, emailError, "Please enter a valid email address.");
+            }
+          });
+          
+          
+          
+        
+          password.addEventListener("input", function () {
+            clearErrorMessage(password, passwordError);
+            
+            const isValid = /^(?=.*[A-Z])(?=.*[!@#$%^&()_+{}\[\]:;<>,.?~\\])(?!.*\s).{8,}$/.test(password.value);
+
+          
+            if (!isValid) {
+              displayErrorMessage(password, passwordError, "Password must contain uppercase, special character, at least 8 characters, and no spaces.");
+            } else {
+              clearErrorMessage(password, passwordError); // Clear the error message if the password is valid
+            }
+          });
+          
+          
+          
+      
+         
+        
+          confirmPassword.addEventListener("input", function () {
+            clearErrorMessage(confirmPassword, confirmPasswordError);
+            if (confirmPassword.value !== password.value) {
+              displayErrorMessage(confirmPassword, confirmPasswordError, "password dosenot match");
+            }
+          });
+      
+      
+          function submitForm(e) {
+            // Check if any error messages exist
+            if (
+              firstNameError.textContent ||
+              lastNameError.textContent ||
+              emailError.textContent ||
+              usernameError.textContent ||
+              passwordError.textContent ||
+              confirmPasswordError.textContent
+            ) {
+              e.preventDefault(); // Prevent form submission if there are errors
+            }
+          }
+        
+          // Event listener for form submission
+          document.getElementById("signup-form").addEventListener("submit", submitForm);
+        
+         
+        });
+        
+      
+      </script>
+</body>
+</html>
+{% endblock form %}

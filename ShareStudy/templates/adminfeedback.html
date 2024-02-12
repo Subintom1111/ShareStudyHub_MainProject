@@ -1,0 +1,76 @@
+{% extends "adminnav.html" %}
+{% load static %}
+
+    
+
+{% block styles %}
+<style>
+    table {
+        width: 70%;
+        border-collapse: collapse;
+        margin-left: 280px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 20px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #333;
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Reduce padding and font size for email cell */
+    td:nth-child(2) {
+        padding: 8px; /* Adjust the padding size as needed */
+        font-size: 14px; /* Adjust the font size as needed */
+    }
+
+    .filter-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    select {
+        padding: 8px;
+    }
+
+    button {
+        padding: 8px 16px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+{% endblock styles %}
+{% block body %}
+<body><br><br><center>
+    <h3>Student Feedback</h3></center><br><br>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Message</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feedback in feedback_list %}
+                <tr>
+                    <td>{{ feedback.student.first_name }}</td>
+                    <td>{{ feedback.message }}</td>
+                    <td>{{ feedback.timestamp }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endblock body %}
+</body>
+</html>

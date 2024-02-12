@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Course</title>
+</head>
+<body>
+    <h1>Select a Course</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="selected_course">Choose a course:</label>
+        <select id="selected_course" name="selected_course">
+            <option value="">-- Select a course --</option>
+            {% for course in courses %}
+                <option value="{{ course.id }}">{{ course.course_name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details</title>
+    <!-- Add your CSS styles here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            line-height: 1.5;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Course Details</h1>
+
+    <div>
+        <h2>{{ course.course_name }}</h2>
+        <p><strong>Description:</strong> {{ course.description }}</p>
+        <p><strong>Assigned Teacher:</strong> {{ course.assigned_teacher }}</p>
+        <p><strong>Credit Hours:</strong> {{ course.credit_hours }}</p>
+        <p><strong>Course Fee:</strong> {{ course.course_fee }}</p>
+        <p><strong>Available Seats:</strong> {{ course.available_seats }}</p>
+        <!-- Add more details as needed -->
+
+        <!-- Add a button or link to go back to the course list or take other actions -->
+        <a href="{% url 'course_list' %}">Back to Course List</a>
+    </div>
+</div>
+
+</body>
+</html>

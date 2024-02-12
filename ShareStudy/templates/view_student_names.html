@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Files</title>
+</head>
+<body>
+    <style>
+        table {
+            width: 70%;
+            border-collapse: collapse;
+            margin-left: 280px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #45a049;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Reduce padding and font size for email cell */
+        td:nth-child(2) {
+            padding: 8px; /* Adjust the padding size as needed */
+            font-size: 14px; /* Adjust the font size as needed */
+        }
+    </style><br><br><center>
+    <h1>Uploaded Files for Assignment: {{ assignment.title }}</h1></center>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Uploaded File</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission in submissions %}
+            <tr>
+                <td>{{ submission.student.first_name }} {{ submission.student.last_name }}</td>
+                <td>
+                    <a href="{{ submission.document.url }}" target="_blank">{{ submission.document.name }}</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No files have been uploaded for this assignment.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

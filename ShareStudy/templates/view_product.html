@@ -1,0 +1,174 @@
+<!-- view_notifications.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>ShareStudy Hub Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %} " rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css" rel="stylesheet' %}">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Mentor
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="/loginhome">ShareStudy Hub</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="{%static '{% static 'assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          {% comment %} <li><a class="nav-link" href="/loginhome">Home</a></li> {% endcomment %}
+          {% comment %} <li class="dropdown"><a href="#"><span>Exam</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Examination</a></li>
+              <li><a href="#">Exam Certificate</a></li>
+                
+              </li>
+              
+            </ul>
+          </li>
+          <li><a href="events.html">Notes</a></li> {% endcomment %}
+          {% comment %} <li><a href="{% url 'assignstu_list' %}">Assignments</a></li> {% endcomment %}
+          {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
+          <li><a href="{% url 'orders' %}">Orders</a></li>
+          <li><a href="{% url 'cart' %}"> Add To Cart</a></li>
+          <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+          <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li><br><li>
+          <li>
+            {% if user.is_authenticated %}
+                <li><h6 class="font-weight-bold" style="color: black;">Welcome, {{ user.first_name }}</h6></li>
+            {% else %}
+                <li><h6 class="font-weight-bold" style="color: black;">Welcome, Please Log in</h6></li>
+            {% endif %}
+          </li>
+
+    </div>
+  </header><!-- End Header -->
+<br><br><br><br><br><br><br>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .book {
+            display: inline-block;
+            width: 200px;
+            margin: 10px;
+        }
+
+        .book img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .book-details {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .book-details.active {
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center><h1>Available Books</h1></center>
+        <div class="books">
+            {% for book in books %}
+                <div class="book">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}" onclick="showBookDetails('{{ product.title }}', '{{ product.author }}', '{{ product.description }}', '{{ product.price }}')">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="book-details-overlay" onclick="hideBookDetails()"></div>
+    <div class="book-details" id="bookDetails">
+        <span class="close-btn" onclick="hideBookDetails()">X</span>
+        <h2 id="bookTitle"></h2>
+        <p><strong>Author:</strong> <span id="bookAuthor"></span></p>
+        <p><strong>Description:</strong> <span id="bookDescription"></span></p>
+        <p><strong>Price:</strong> <span id="bookPrice"></span></p>
+    </div>
+
+    <script>
+        function showBookDetails(title, author, description, price) {
+            document.getElementById('bookTitle').innerText = title;
+            document.getElementById('bookAuthor').innerText = author;
+            document.getElementById('bookDescription').innerText = description;
+            document.getElementById('bookPrice').innerText = price;
+            document.querySelector('.book-details').classList.add('active');
+            document.querySelector('.book-details-overlay').classList.add('active');
+        }
+
+        function hideBookDetails() {
+            document.querySelector('.book-details').classList.remove('active');
+            document.querySelector('.book-details-overlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

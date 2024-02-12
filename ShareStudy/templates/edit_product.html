@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Product</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" value="{{ product.title }}" required>
+            </div>
+            <div>
+                <label for="author">Author:</label>
+                <input type="text" id="author" name="author" value="{{ product.author }}" required>
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required>{{ product.description }}</textarea>
+            </div>
+            <div>
+                <label for="price">Price:</label>
+                <input type="text" id="price" name="price" value="{{ product.price }}" required>
+            </div>
+            <div>
+                <label for="quantity">Quantity:</label>
+                <input type="text" id="quantity" name="quantity" value="{{ product.quantity }}" required>
+            </div>
+            <div>
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" value="{{ product.category }}" required>
+            </div>
+            <div>
+                <label for="image">Image:</label>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="Product Image" style="max-width: 200px;">
+                    <button type="button" onclick="clearImage()">Clear Image</button>
+                    <input type="hidden" id="clear_image" name="clear_image" value="0">
+                {% else %}
+                    <input type="file" id="image" name="image">
+                {% endif %}
+            </div>
+            
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        function clearImage() {
+            document.getElementById('clear_image').value = '1';
+            document.getElementById('image').value = ''; // Clear the file input
+        }
+    </script>
+</body>
+</html>

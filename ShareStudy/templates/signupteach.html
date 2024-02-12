@@ -1,0 +1,253 @@
+{% extends 'nav.html' %}
+{% block title %}
+ShareStudy Hub
+{% endblock title %}
+{% block form %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareStudy Hub | SIGNUP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url('signupimg.jpg'); /* Replace with your own image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        h2 {
+            margin-top: 50px;
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .form-group select#department {
+            width: 80%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>SIGNUP FOR TEACHER</h2><br>
+        <form id="signup-form" action="http://127.0.0.1:8000/signupteach/" method="post">  {% csrf_token %}
+            <div class="form-group">
+                <label for="first-name">Full Name:</label>
+                <input type="text" id="first-name" name="first-name" required onchange="validateFirstName()"><br>
+                <span id="first-name-error" class="error-message"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required onchange="validateEmail()"><br>
+                <span id="email-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required onchange="validateUsername()"><br>
+                <span id="username-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required onchange="validatePassword()"><br>
+                <span id="password-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm_password" required onchange="validateConfirmPassword()"><br>
+                <span id="confirm-password-error" class="error-message"></span>
+            </div>
+            
+                <button type="submit" class="submit-btn" onclick="validateSignup()">Sign Up</button>
+                <span id="success-message" class="success-message"></span>
+        
+                <p class="signup">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </form>
+    </div>
+
+    <script>
+        function validateEmail() {
+            const email = document.getElementById('email').value;
+            const emailError = document.getElementById('email-error');
+
+            emailError.textContent = '';
+
+            // Validate email format (no uppercase letters)
+            const emailPattern = /^[a-z0-9._-]+@[a-z.-]+\.[a-z]{2,4}$/;
+            if (!emailPattern.test(email)) {
+                emailError.textContent = 'Invalid Email !!';
+            }
+        }
+        
+
+        function validateUsername() {
+            const username = document.getElementById('username').value;
+            const usernameError = document.getElementById("username-error");
+            
+
+            usernameError.textContent = '';
+            const regex = /^[a-zA-Z][a-zA-Z0-9_-]{2,19}$/;  // Setting Up Regular Expression
+            const match = username.match(regex);
+            // const noMatch = username.match(/\s/)
+        
+            if (!match) {
+                usernameError.style.color = "";
+                if (username.trim() === "") {
+                    usernameError.textContent = "This Field Cannot be empty";
+                }else if (!username.match(/^[a-zA-Z]/)) {
+                    usernameError.textContent = " Username must start with a letter.";
+                }else if (!username.match(/[a-zA-Z0-9_-]{2,19}$/)) {
+                    usernameError.textContent = " Username must be between 3 and 20 characters and can only contain letters, numbers, underscores, or hyphens.";
+                }else if (username.match(/\s/)){
+                    usernameError.textContent = "White Space Not Allowed";
+                }else{
+                    usernameError.textContent = " Username must be between 3 and 20 characters and can only contain letters, numbers, underscores, or hyphens.";
+                }
+                return false;
+            } 
+        }
+  
+        
+
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const passwordError = document.getElementById('password-error');
+
+            passwordError.textContent = '';
+
+            // Validate password (at least 8 characters, with complexity)
+            const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+            if (!passwordPattern.test(password)) {
+                passwordError.textContent = 'Password must contain at least one numeric digit, one uppercase letter, one lowercase letter, one special character, and be at least 8 characters long';
+            }
+        }
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+
+            confirmPasswordError.textContent = '';
+
+            // Confirm password match
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match';
+            }
+        }
+
+        function validateFirstName() {
+            const firstNameInput = document.getElementById('first-name');
+            const firstName = firstNameInput.value;
+            const firstNameError = document.getElementById('first-name-error');
+        
+            firstNameError.textContent = ''; // Clear any existing error message
+        
+            // Validate the first name (between 2 and 50 characters, letters, hyphens, and apostrophes)
+            const namePattern = /^[A-Za-z-' ]{2,50}$/; // Adjust as needed
+
+        function validateDepartment() {
+            const department = document.getElementById('department').value;
+            const departmentError = document.getElementById('department-error');
+            
+            departmentError.textContent = '';
+            
+                // You can add specific validation rules for the department here if needed.
+            
+            if (!department) {
+                departmentError.textContent = 'Please select a department.';
+            }
+        }
+            
+        
+            if (!namePattern.test(firstName)) {
+                firstNameError.textContent = ' Name is invalid';
+            } else if (/ {2,}/.test(firstName)) {
+                // Check for multiple consecutive spaces
+                firstNameError.textContent = 'Multiple consecutive spaces are not allowed';
+            }
+        }
+        
+        
+        
+
+        
+
+        function validateSignup() {
+            validateEmail();
+            validateUsername();
+            validatePassword();
+            validateConfirmPassword();
+            validateFirstName();
+            validateDepartment();
+
+            const emailError = document.getElementById('email-error').textContent;
+            const usernameError = document.getElementById('username-error').textContent;
+            const passwordError = document.getElementById('password-error').textContent;
+            const confirmPasswordError = document.getElementById('confirm-password-error').textContent;
+            const firstNameError = document.getElementById('first-name-error').textContent;
+            const departmentError = document.getElementById('department-error').textContent;
+            const successMessage = document.getElementById('success-message');
+
+            // If any error messages exist, do not proceed
+            if (emailError || usernameError || passwordError || confirmPasswordError || firstNameError || departmentError) {
+                return;
+            }
+
+            // If all validations pass, show success message
+            successMessage.textContent = 'Registration successful!';
+            // You can add code here to submit the form or perform other actions if needed.
+        }
+    </script>
+</body>
+</html>
+{% endblock form %}

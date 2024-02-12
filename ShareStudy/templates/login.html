@@ -1,0 +1,154 @@
+{% extends 'nav.html' %}
+{% block title %}
+ShareStudy Hub
+{% endblock title %}
+{% block form %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareStudy Hub | LOGIN</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url('signupimg.jpg'); /* Replace with your own image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        h6.custom-text {
+            margin-top: 30px; /* Adjust the margin as needed */
+            text-align: center;
+            color: #fff; /* A blue color, you can change this */
+            font-size: 3em; /* Use a suitable font-size */
+            font-family: 'Verdana', sans-serif; /* Change the font-family if needed */
+            animation: fadeInAndColorChange 2s ease forwards;
+          }
+          
+          @keyframes fadeInAndColorChange {
+            to {
+              opacity: 1;
+              color: #fff; /* Change to white when animation completes */
+            }
+          }
+          
+        
+          form {
+            max-width: 350px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e74c3c;
+            border-radius: 15px;
+            text-align: center;
+          }
+          
+          form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #3498db;
+            border-radius: 8px;
+          }
+          
+          form button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+          }
+          
+          form button:hover {
+            background-color: #27ae60;
+          }
+          
+          
+          
+          
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+  <div class="login-container">
+
+    
+    {% for message in messages %}
+
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <strong></strong>{{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+
+
+    <h6 class="custom-text" style="margin-top: 40px; margin-left: 10px;">Login</h6><br>
+    <form id="login-form" method="post">
+        {% csrf_token %}
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" placeholder=" Enter the Email :" required>
+        <span id="email-error" class="error-message"></span>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter the Password : "required>
+        <span id="password-error" class="error-message"></span>
+        {% if error_message%}
+        <P class="error-message">{{ error_message}}</p>
+        {% endif %}
+    
+    <button type="submit" class="submit-btn" >Login</button>
+            <span id="success-message" class="success-message"></span><br>
+        </form>
+        <p class="login">Not Already have an account?  <a href="{% url 'signup' %}">Signup</a></p>
+        <span>  <a href="{% url 'password_reset' %}">Forget Password</a>
+      </div>
+      </div>
+</body>
+</html>
+
+{% endblock form %}

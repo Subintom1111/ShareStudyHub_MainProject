@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .product {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+
+        .product-details {
+            margin-bottom: 20px;
+        }
+
+        .product-details label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .product-details p {
+            margin: 5px 0;
+        }
+
+        .product-image {
+            display: block;
+            max-width:50%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .edit-option {
+            text-align: center;
+        }
+        
+        .green-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        
+        .edit-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All Products</h1>
+        {% for product in products %}
+            <div class="product">
+                <!-- Product details -->
+                <div class="product-details">
+                    <label>Title:</label>
+                    <p>{{ product.title }}</p>
+                </div>
+                <div class="product-details">
+                    <label>Author:</label>
+                    <p>{{ product.author }}</p>
+                </div>
+                <div class="product-details">
+                    <label>Description:</label>
+                    <p>{{ product.description }}</p>
+                </div>
+                <div class="product-details">
+                    <label>Price:</label>
+                    <p>${{ product.price }}</p>
+                </div>
+                <div class="product-details">
+                    <label>Quantity:</label>
+                    <p>{{ product.quantity }}</p>
+                </div>
+                <div class="product-details">
+                    <label>Category:</label>
+                    <p>{{ product.category }}</p>
+                </div>
+                <div class="product-details">
+                    <label>Images:</label>
+                    {% if product.image %}
+                    <img src="{% static 'product_images/book1_KBRD6We.png' %}" alt="Book Image" class="product-image">
+
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                </div>
+                
+                <div class="edit-option">
+                    <form action="{% url 'edit_product' product.id %}" method="get">
+                        <button type="submit" class="green-button">Edit</button>
+                    </form>
+                </div>
+                
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

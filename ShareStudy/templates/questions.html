@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create MCQ</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {% for i in range(number_of_questions) %}
+            <label for="mcq{{ i }}">MCQ {{ i+1 }}</label>
+            <input type="text" name="mcq{{ i }}" id="mcq{{ i }}"><br>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

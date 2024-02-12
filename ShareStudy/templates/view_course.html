@@ -1,0 +1,93 @@
+{% extends "adminnav.html" %}
+{% load static %}
+
+    
+
+{% block styles %}
+           <style>
+            table {
+                width: 70%;
+                border-collapse: collapse;
+                margin-left: 280px;
+            }
+        
+            th, td {
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: left;
+            }
+        
+            th {
+                background-color: #333;
+                color: #fff;
+            }
+        
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+        
+            /* Reduce padding and font size for email cell */
+            td:nth-child(2) {
+                padding: 8px; /* Adjust the padding size as needed */
+                font-size: 14px; /* Adjust the font size as needed */
+            }
+        
+            .filter-container {
+                text-align: center;
+                margin: 20px 0;
+            }
+        
+            select {
+                padding: 8px;
+            }
+        
+            button {
+                padding: 8px 16px;
+                background-color: #333;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+        {% endblock styles %}
+        {% block body %}<br><br><br>
+     
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Description</th>
+                    <th>Assigned Teacher</th>
+                    <th>Credit Hours</th>
+                    <th>Course Fee</th>
+                    <th>Available Seats</th>
+                    <th>Action</th> <!-- Add a new column for the Delete button -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                    <tr>
+                        <td>{{ course.course_name }}</td>
+                        <td>{{ course.description }}</td>
+                        <td>{{ course.assigned_teachers }}</td>
+                        <td>{{ course.credit_hours }}</td>
+                        <td>{{ course.course_fee }}</td>
+                        <td>{{ course.available_seats }}</td>
+                        <td>
+                            <form method="post" action="{% url 'delete_course' course.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        
+        
+        
+        {% endblock body %}
+        
+        
