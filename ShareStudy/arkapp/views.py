@@ -1040,9 +1040,12 @@ def remove_from_cart(request, product_id):
 from django.shortcuts import render, redirect
 from .models import DeliveryAddress, Product  # Import the Product model
 from django.shortcuts import get_object_or_404
+import razorpay
  # Import the calculate_delivery_charge function
 
 def buy_now(request, product_id):
+
+    
     product = get_object_or_404(Product, pk=product_id)
     
     # Calculate the book price, delivery charge, and total price
@@ -1054,6 +1057,12 @@ def buy_now(request, product_id):
     delivery_address = DeliveryAddress.objects.first()
 
     if request.method == 'POST':
+
+        amount = 50000
+        currency = 'INR'
+        client = razorpay.Client(auth=("rzp_test_LxNK7J7SzQhQFe", "3k9GZfiVmK7viFrE5ghobfjf"))
+    
+        payment = client.order.create({'amount':amount,'currency':'INR','payment_capture':'1'})
         # Retrieve the delivery address data from the POST request
         name = request.POST.get('name')
         mobile_number = request.POST.get('mobile')
@@ -1096,6 +1105,11 @@ def calculate_delivery_charge(book_price):
         return 0
     else:
         return 40
+
+
+def success(request):
+    return render(request,"success.html")
+
 
 
 # views.py

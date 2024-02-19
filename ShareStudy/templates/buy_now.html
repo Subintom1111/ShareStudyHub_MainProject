@@ -73,144 +73,336 @@
     </div>
   </header><!-- End Header -->
   <br><br><br><br><br><br><br>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Now</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Buy Now</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+              margin: 0;
+              padding: 0;
+          }
+  
+          .container {
+              max-width: 1000px;
+              margin: 20px auto;
+              padding: 20px;
+              display: flex;
+              justify-content: space-between;
+              flex-wrap: wrap;
+              background-color: #fff;
+              border-radius: 8px;
+              box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+  
+          .delivery-address {
+              border: 1px solid #ccc;
+              border-radius: 8px;
+              padding: 20px;
+              margin-bottom: 20px;
+              flex-basis: 48%;
+          }
+  
+          .price-details {
+              border: 1px solid #ccc;
+              border-radius: 8px;
+              padding: 20px;
+              margin-bottom: 20px;
+              flex-basis: 48%;
+          }
+  
+          .delivery-address h2, .price-details h2 {
+              margin-top: 0;
+              margin-bottom: 20px;
+              color: #333;
+              font-size: 24px;
+          }
+  
+          .delivery-address label, .price-details label {
+              display: block;
+              margin-bottom: 10px;
+              font-weight: bold;
+              color: #555;
+          }
+  
+          .delivery-address input[type="text"], .delivery-address textarea, .delivery-address select {
+              width: 100%;
+              padding: 10px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              margin-bottom: 10px;
+              box-sizing: border-box;
+          }
+  
+          .delivery-address button {
+              background-color: #4CAF50;
+              border: none;
+              color: white;
+              padding: 10px 20px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+              border-radius: 5px;
+              cursor: pointer;
+          }
+  
+          .delivery-address button:hover {
+              background-color: #45a049;
+          }
+  
+          .price-details p {
+              margin-bottom: 10px;
+              color: #555;
+          }
+  
+          .total-price {
+              font-weight: bold;
+              color: #333;
+              font-size: 20px;
+          }
+  
+          .error-message {
+              color: red;
+              font-size: 14px;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="delivery-address">
+              <h2>Delivery Address</h2>
+              <form id="address-form" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+              
+                  <label for="name">Name:</label>
+                  <input type="text" id="name" name="name" required>
+                  <span class="error-message" id="name-error"></span>
+                  
+                  <label for="mobile">Mobile Number:</label>
+                  <input type="text" id="mobile" name="mobile" required>
+                  <span class="error-message" id="mobile-error"></span>
+                  
+                  <label for="pincode">Pincode:</label>
+                  <input type="text" id="pincode" name="pincode" required>
+                  <span class="error-message" id="pincode-error"></span>
+                  
+                  <label for="locality">Locality:</label>
+                  <input type="text" id="locality" name="locality" required>
+                  <span class="error-message" id="locality-error"></span>
+                  
+                  <label for="address">Address:</label>
+                  <textarea id="address" name="address" rows="4" required></textarea>
+                  <span class="error-message" id="address-error"></span>
+                  
+                  <label for="city">City:</label>
+                  <input type="text" id="city" name="city" required>
+                  <span class="error-message" id="city-error"></span>
+                  
+                  <label for="state">State:</label>
+                <select id="state" name="state" required>
+                    <option value="">Select State</option>
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                    <option value="Daman and Diu">Daman and Diu</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Ladakh">Ladakh</option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Puducherry">Puducherry</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
+                <span class="error-message" id="state-error"></span>
 
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .delivery-address {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            flex-basis: 48%;
-        }
-
-        .price-details {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            flex-basis: 48%;
-        }
-
-        .delivery-address h2, .price-details h2 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 24px;
-        }
-
-        .delivery-address label, .price-details label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        .delivery-address input[type="text"], .delivery-address textarea, .delivery-address select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        .delivery-address button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .delivery-address button:hover {
-            background-color: #45a049;
-        }
-
-        .price-details p {
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        .total-price {
-            font-weight: bold;
-            color: #333;
-            font-size: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="delivery-address">
-            <h2>Delivery Address</h2>
-            <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                
-                <label for="mobile">Mobile Number:</label>
-                <input type="text" id="mobile" name="mobile" required>
-                
-                <label for="pincode">Pincode:</label>
-                <input type="text" id="pincode" name="pincode" required>
-                
-                <label for="locality">Locality:</label>
-                <input type="text" id="locality" name="locality" required>
-                
-                <label for="address">Address:</label>
-                <textarea id="address" name="address" rows="4" required></textarea>
-                
-                <label for="city">City:</label>
-                <input type="text" id="city" name="city" required>
-                
-                <label for="state">State:</label>
-                <input type="text" id="state" name="state" required>
-                
+                  
                 <label for="address-type">Address Type:</label>
                 <select id="address-type" name="address-type" required>
-                    <option value="home">Home</option>
-                    <option value="work">Work</option>
+                    <option value="" disabled selected>Select address type</option>
+                    <option value="home" disabled>Home (10:00 AM - 6:00 PM)</option>
+                    <option value="work" disabled>Work (9:00 AM - 5:00 PM)</option>
                 </select>
                 
-                <button type="submit">Save and Deliver Here</button>
-            </form>
-        </div>
+                  
+                  <button type="submit">Save and Deliver Here</button>
+              </form>
+  
+              <!-- Razorpay Payment Integration -->
+              <form action="success" method="POST">
+                  {% csrf_token %}
+                  <script
+                      src="https://checkout.razorpay.com/v1/checkout.js"
+                      data-key="rzp_test_LxNK7J7SzQhQFe"
+                      data-amount="1000"
+                      data-currency="INR"
+                      data-order_id="{{payment.id}}"
+                      data-buttontext="Pay with Razorpay"
+                      data-name="Acme Corp"
+                      data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+                      data-image="https://example.com/your_logo.jpg"
+                      data-prefill.name="Subin Tom"
+                      data-prefill.email="subintom1111@gmail.com"
+                      data-theme.color="#F37254"
+                  ></script>
+              </form>
+          </div>
+  
+          <div class="price-details">
+              <h2>Price Details</h2>
+              <p>Book Price: ${{ book_price }}</p>
+              <p>Delivery Charge: ${{ delivery_charge }}</p>
+              <hr>
+              <p class="total-price">Total Price: ${{ total_price }}</p>
+          </div>
+      </div>
+  
+      <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              // Real-time validation for each input field
+              const nameInput = document.getElementById("name");
+              const mobileInput = document.getElementById("mobile");
+              const pincodeInput = document.getElementById("pincode");
+              const localityInput = document.getElementById("locality");
+              const addressInput = document.getElementById("address");
+              const cityInput = document.getElementById("city");
+              const stateInput = document.getElementById("state");
+  
+              // Validation messages
+              const errorMessages = {
+                  name: "Name cannot be empty",
+                  mobile: "Invalid mobile number",
+                  pincode: "Invalid pincode",
+                  locality: "Locality cannot be empty",
+                  address: "Address cannot be empty",
+                  city: "City cannot be empty",
+                  state: "State cannot be empty"
+              };
+  
+              // Function to display error message
+              function displayError(input, message) {
+                  const errorElement = document.getElementById(`${input.id}-error`);
+                  errorElement.innerText = message;
+              }
+  
+              // Function to clear error message
+              function clearError(input) {
+                  const errorElement = document.getElementById(`${input.id}-error`);
+                  errorElement.innerText = "";
+              }
+  
+              // Regex patterns for validation
+              const mobilePattern = /^[6-9]\d{9}$/;
+              const pincodePattern = /^[1-9][0-9]{5}$/;
+  
+              // Validate name
 
-        <div class="price-details">
-            <h2>Price Details</h2>
-            <p>Book Price: ${{ book_price }}</p>
-            <p>Delivery Charge: ${{ delivery_charge }}</p>
-            <hr>
-            <p class="total-price">Total Price: ${{ total_price }}</p>
-        </div>
-    </div>
-</body>
-</html>
+                nameInput.addEventListener("input", function () {
+                    const nameValue = nameInput.value.trim();
+                    const regex = /^[A-Za-z\s]+$/; // Regular expression to allow only alphabets and spaces
+
+                    if (!regex.test(nameValue)) {
+                        displayError(nameInput, "Name cannot contain numbers or symbols.");
+                    } else {
+                        clearError(nameInput);
+                    }
+                });
+
+              // Validate mobile number
+              mobileInput.addEventListener("input", function () {
+                  if (!mobilePattern.test(mobileInput.value)) {
+                      displayError(mobileInput, errorMessages.mobile);
+                  } else {
+                      clearError(mobileInput);
+                  }
+              });
+  
+              // Validate pincode
+              pincodeInput.addEventListener("input", function () {
+                  if (!pincodePattern.test(pincodeInput.value)) {
+                      displayError(pincodeInput, errorMessages.pincode);
+                  } else {
+                      clearError(pincodeInput);
+                  }
+              });
+  
+              // Validate locality
+
+                localityInput.addEventListener("input", function () {
+                    const localityValue = localityInput.value.trim();
+                    const regex = /^[A-Za-z0-9\s]+$/; // Regular expression to allow only letters, numbers, and spaces
+
+                    if (!regex.test(localityValue)) {
+                        displayError(localityInput, "Locality cannot contain symbols.");
+                    } else {
+                        clearError(localityInput);
+                    }
+                });
+
+  
+              // Validate address
+              addressInput.addEventListener("input", function () {
+                  if (addressInput.value.trim() === "") {
+                      displayError(addressInput, errorMessages.address);
+                  } else {
+                      clearError(addressInput);
+                  }
+              });
+  
+              // Validate city
+
+                cityInput.addEventListener("input", function () {
+                    const cityValue = cityInput.value.trim();
+                    const regex = /^[A-Za-z\s]+$/; // Regular expression to allow only letters and spaces
+
+                    if (!regex.test(cityValue)) {
+                        displayError(cityInput, "City cannot contain symbols.");
+                    } else {
+                        clearError(cityInput);
+                    }
+                });
+
+  
+              // Validate state
+              stateInput.addEventListener("input", function () {
+                  if (stateInput.value.trim() === "") {
+                      displayError(stateInput, errorMessages.state);
+                  } else {
+                      clearError(stateInput);
+                  }
+              });
+          });
+      </script>
+  </body>
+  </html>
+  

@@ -158,3 +158,5 @@ EMAIL_HOST_PASSWORD = 'hvgk djlb aqgq qadw'
 MESSAGE_TAGS={
     messages.ERROR:'danger', 
 }
+
+
