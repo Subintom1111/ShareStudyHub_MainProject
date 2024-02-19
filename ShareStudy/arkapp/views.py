@@ -417,7 +417,8 @@ def adminnew(request):
 
 
 
-
+@never_cache
+@login_required(login_url="login")
 def userview(request):
     role_filter = request.GET.get('role')
     users = User.objects.filter(~Q(is_superuser=True))  # Exclude superusers by default
@@ -479,6 +480,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Courses
 
+@never_cache
+@login_required(login_url="login")
 def add_course(request):
     if request.method == "POST":
         course_name = request.POST.get("course_name")
@@ -529,7 +532,8 @@ def examdetails(request):
 
 ##########################################################################
 
-
+@never_cache
+@login_required(login_url="login")
 def view_course(request):
     courses = Courses.objects.all()  # Retrieve all courses
     return render(request, 'view_course.html', {'courses': courses})
@@ -575,6 +579,8 @@ def feedback_thankyou(request):
 from django.shortcuts import render
 from .models import Feedback
 
+@never_cache
+@login_required(login_url="login")
 def adminfeedback(request):
     feedback_list = Feedback.objects.all()
     return render(request, 'adminfeedback.html', {'feedback_list': feedback_list})
@@ -744,6 +750,9 @@ def stu_sidecourse(request, course_id):
 
 
 from .models import Notification
+
+@never_cache
+@login_required(login_url="login")
 def send_notification(request):
     if request.method == 'POST':
         message = request.POST.get('message')
@@ -767,6 +776,9 @@ def view_notifications(request):
 
     return render(request, 'view_notifications.html', {'notifications': notifications})
 
+
+@never_cache
+@login_required(login_url="login")
 def admin_notifications(request):
     
         notifications = Notification.objects.all().order_by('-timestamp')
@@ -821,6 +833,9 @@ def view_course_notes(request):
 from django.shortcuts import render, redirect
 from .models import Product
 
+
+@never_cache
+@login_required(login_url="login")
 def add_product(request):
     if request.method == 'POST':
         # Retrieve data from the request
@@ -855,6 +870,9 @@ def add_product(request):
 from django.shortcuts import render
 from .models import Product
 
+
+@never_cache
+@login_required(login_url="login")
 def adminview_product(request):
     # Retrieve all products from the database
     products = Product.objects.all()
@@ -867,6 +885,8 @@ def adminview_product(request):
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product
 
+@never_cache
+@login_required(login_url="login")
 def edit_product(request, product_id):
     # Retrieve the product object from the database
     product = get_object_or_404(Product, id=product_id)
@@ -903,6 +923,8 @@ from .models import Product
 from django.shortcuts import render
 from .models import Product
 
+@never_cache
+@login_required(login_url="login")
 def view_product(request):
     # Retrieve all products from the database
     search_query = request.GET.get('search_query')
@@ -919,7 +941,8 @@ def view_product(request):
 
 
 
-
+@never_cache
+@login_required(login_url="login")
 def product_details(request, product_id):
     # Retrieve the product object based on the provided product_id
     product = get_object_or_404(Product, pk=product_id)
@@ -927,6 +950,9 @@ def product_details(request, product_id):
 
 
 
+
+@never_cache
+@login_required(login_url="login")
 def product_detailssss(request, product_id):
     # Retrieve the product object based on the provided product_id
     product = get_object_or_404(Product, pk=product_id)
@@ -952,6 +978,8 @@ def add_to_cart(request, product_id):
         return redirect('view_product.html', product_id=product_id)
 
 
+@never_cache
+@login_required(login_url="login")
 def cart_page(request):
     cart_items = CartItem.objects.filter(user=request.user)
     return render(request, 'cart_page.html', {'cart_items': cart_items})
@@ -1043,6 +1071,8 @@ from django.shortcuts import get_object_or_404
 import razorpay
  # Import the calculate_delivery_charge function
 
+@never_cache
+@login_required(login_url="login")
 def buy_now(request, product_id):
 
     
@@ -1050,15 +1080,15 @@ def buy_now(request, product_id):
     
     # Calculate the book price, delivery charge, and total price
     book_price = product.price
-    delivery_charge = calculate_delivery_charge(book_price)  # Calculate delivery charge
-    total_price = book_price + delivery_charge
+     # Calculate delivery charge
+    total_price = book_price
 
 
     delivery_address = DeliveryAddress.objects.first()
 
     if request.method == 'POST':
 
-        amount = 50000
+        amount = 50000000
         currency = 'INR'
         client = razorpay.Client(auth=("rzp_test_LxNK7J7SzQhQFe", "3k9GZfiVmK7viFrE5ghobfjf"))
     
@@ -1086,12 +1116,11 @@ def buy_now(request, product_id):
         )
 
         # Redirect to a thank you page or order confirmation page
-        return redirect('buy_now', product_id=product_id)   # Update the redirect URL accordingly
+        return redirect('payment', product_id=product_id)   # Update the redirect URL accordingly
 
     context = {
         'product_id': product_id,
         'book_price': book_price,
-        'delivery_charge': delivery_charge,
         'total_price': total_price,
         'delivery_address': delivery_address
     }
@@ -1099,18 +1128,38 @@ def buy_now(request, product_id):
 
 # utils.py
 
-def calculate_delivery_charge(book_price):
-    # Your logic to calculate delivery charge based on book price goes here
-    if book_price >= 300:
-        return 0
-    else:
-        return 40
-
 
 def success(request):
     return render(request,"success.html")
 
+@never_cache
+@login_required(login_url="login")
+def payment(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    
+    # Calculate the book price, delivery charge, and total price
+    book_price = product.price
+     # Calculate delivery charge
+    total_price = int(book_price*100)
+    
 
+    if request.method == 'POST':
+
+        amount = 50000000
+        currency = 'INR'
+        client = razorpay.Client(auth=("rzp_test_LxNK7J7SzQhQFe", "3k9GZfiVmK7viFrE5ghobfjf"))
+    
+        payment = client.order.create({'amount':amount,'currency':'INR','payment_capture':'1'})
+
+    context = {
+        'product_id': product_id,
+        'book_price': book_price,
+        'total_price': total_price,
+        
+
+    }
+    # Your payment logic goes here
+    return render(request, 'payment.html', context)
 
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404

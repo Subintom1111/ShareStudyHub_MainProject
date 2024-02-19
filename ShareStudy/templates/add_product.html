@@ -96,15 +96,21 @@
             <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
+                <div id="title-error" class="error-message"></div>
             </div>
+            
             <div class="form-group">
                 <label for="author">Author:</label>
                 <input type="text" id="author" name="author" required>
+                <div id="author-error" class="error-message"></div>
             </div>
+            
             <div class="form-group">
                 <label for="description">Description:</label>
                 <textarea id="description" name="description" rows="4" required></textarea>
+                <div id="description-error" class="error-message"></div>
             </div>
+            
             <div class="form-group">
                 <label for="price">Price:</label>
                 <input type="number" id="price" name="price" step="0.01" min="0" required>
@@ -127,13 +133,62 @@
             <div class="form-group">
                 <label for="images">Images:</label>
                 <input type="file" id="image" name="image" accept="image/*" multiple required>
-                <small>Hold down the Ctrl (windows) or Command (Mac) button to select multiple images.</small>
+                
             </div>
             <div class="form-group">
                 <input type="submit" value="Add Product">
             </div>
         </form>
     </div>
+    <script>
+        const titleInput = document.getElementById("title");
+        const authorInput = document.getElementById("author");
+        const descriptionInput = document.getElementById("description");
+    
+        // Regex patterns for validation
+        const textPattern = /^[A-Za-z\s]+$/; // Regular expression to allow only alphabets and spaces
+    
+        // Validate title
+        titleInput.addEventListener("input", function () {
+            const titleValue = titleInput.value.trim();
+    
+            if (!textPattern.test(titleValue)) {
+                displayError(titleInput, "Title cannot contain numbers or symbols.");
+            } else {
+                clearError(titleInput);
+            }
+        });
+    
+        // Validate author
+        authorInput.addEventListener("input", function () {
+            const authorValue = authorInput.value.trim();
+    
+            if (!textPattern.test(authorValue)) {
+                displayError(authorInput, "Author name cannot contain numbers or symbols.");
+            } else {
+                clearError(authorInput);
+            }
+        });
+    
+        // Validate description
+        descriptionInput.addEventListener("input", function () {
+            if (descriptionInput.value.trim() === "") {
+                displayError(descriptionInput, "Description is required.");
+            } else {
+                clearError(descriptionInput);
+            }
+        });
+    
+        function displayError(inputElement, message) {
+            const errorElement = document.getElementById(`${inputElement.id}-error`);
+            errorElement.innerHTML = message;
+        }
+    
+        function clearError(inputElement) {
+            const errorElement = document.getElementById(`${inputElement.id}-error`);
+            errorElement.innerHTML = "";
+        }
+    </script>
 </body>
 </html>
 {% endblock body %}

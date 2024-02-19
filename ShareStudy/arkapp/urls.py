@@ -75,6 +75,7 @@ urlpatterns = [
     path('wishlist/', views.wishlist, name='wishlist'),
     path('orders/', views.orders, name='orders'),
     path('buy_now/<int:product_id>/', views.buy_now, name='buy_now'),
+    path('payment/<int:product_id>/', views.payment, name='payment'),
 ]
 
 

@@ -76,27 +76,32 @@
 <body>
     <div class="container">
         <h1>Edit Product</h1>
-        <form method="POST" enctype="multipart/form-data">
+        <form id="product-form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div>
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" value="{{ product.title }}" required>
+                <div id="title-error" class="error-message"></div>
             </div>
             <div>
                 <label for="author">Author:</label>
                 <input type="text" id="author" name="author" value="{{ product.author }}" required>
+                <div id="author-error" class="error-message"></div>
             </div>
             <div>
                 <label for="description">Description:</label>
                 <textarea id="description" name="description" required>{{ product.description }}</textarea>
+                <div id="description-error" class="error-message"></div>
             </div>
             <div>
                 <label for="price">Price:</label>
                 <input type="text" id="price" name="price" value="{{ product.price }}" required>
+                <div id="price-error" class="error-message"></div>
             </div>
             <div>
                 <label for="quantity">Quantity:</label>
                 <input type="text" id="quantity" name="quantity" value="{{ product.quantity }}" required>
+                <div id="quantity-error" class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="category">Category:</label>
@@ -108,10 +113,114 @@
                     <option value="Reference (non-fiction)" {% if product.category == 'Reference (non-fiction)' %} selected {% endif %}>Reference (non-fiction)</option>
                     <!-- Add more options as needed -->
                 </select>
+                <div id="category-error" class="error-message"></div>
             </div>
             <br><br>
             <button type="submit">Save Changes</button>
         </form>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.querySelector('form');
+                const titleInput = document.getElementById('title');
+                const authorInput = document.getElementById('author');
+                const descriptionInput = document.getElementById('description');
+                const priceInput = document.getElementById('price');
+                const quantityInput = document.getElementById('quantity');
+                const categoryInput = document.getElementById('category');
+            
+                // Regex patterns for validation
+                const regexAlphaSpace = /^[A-Za-z\s]+$/;
+                const regexNumeric = /^[0-9]+$/;
+            
+                form.addEventListener('submit', function (event) {
+                    let isValid = true;
+            
+                    // Title validation
+                    const titleValue = titleInput.value.trim();
+                    if (titleValue === '') {
+                        displayError(titleInput, 'Title is required.');
+                        isValid = false;
+                    } else if (!regexAlphaSpace.test(titleValue)) {
+                        displayError(titleInput, 'Title cannot contain numbers or symbols.');
+                        isValid = false;
+                    } else {
+                        clearError(titleInput);
+                    }
+            
+                    // Author validation
+                    const authorValue = authorInput.value.trim();
+                    if (authorValue === '') {
+                        displayError(authorInput, 'Author is required.');
+                        isValid = false;
+                    } else if (!regexAlphaSpace.test(authorValue)) {
+                        displayError(authorInput, 'Author cannot contain numbers or symbols.');
+                        isValid = false;
+                    } else {
+                        clearError(authorInput);
+                    }
+            
+                    // Description validation
+                    const descriptionValue = descriptionInput.value.trim();
+                    if (descriptionValue === '') {
+                        displayError(descriptionInput, 'Description is required.');
+                        isValid = false;
+                    } else {
+                        clearError(descriptionInput);
+                    }
+            
+                    // Price validation
+                    const priceValue = priceInput.value.trim();
+                    if (priceValue === '') {
+                        displayError(priceInput, 'Price is required.');
+                        isValid = false;
+                    } else if (!regexNumeric.test(priceValue)) {
+                        displayError(priceInput, 'Price should be a numeric value.');
+                        isValid = false;
+                    } else {
+                        clearError(priceInput);
+                    }
+            
+                    // Quantity validation
+                    const quantityValue = quantityInput.value.trim();
+                    if (quantityValue === '') {
+                        displayError(quantityInput, 'Quantity is required.');
+                        isValid = false;
+                    } else if (!regexNumeric.test(quantityValue)) {
+                        displayError(quantityInput, 'Quantity should be a numeric value.');
+                        isValid = false;
+                    } else {
+                        clearError(quantityInput);
+                    }
+            
+                    // Category validation
+                    if (categoryInput.value === '') {
+                        displayError(categoryInput, 'Category is required.');
+                        isValid = false;
+                    } else {
+                        clearError(categoryInput);
+                    }
+            
+                    if (!isValid) {
+                        event.preventDefault(); // Prevent form submission if validation fails
+                    }
+                });
+            
+                function displayError(input, message) {
+                    const errorElement = input.nextElementSibling;
+                    errorElement.innerText = message;
+                    errorElement.style.display = 'block';
+                }
+            
+                function clearError(input) {
+                    const errorElement = input.nextElementSibling;
+                    errorElement.innerText = '';
+                    errorElement.style.display = 'none';
+                }
+            });
+            
+        </script>
+        
     </div>
 </body>
 </html>

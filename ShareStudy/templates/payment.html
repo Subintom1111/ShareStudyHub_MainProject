@@ -1,58 +1,86 @@
+<!-- view_notifications.html -->
+{% load static %}
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>ShareStudy Hub Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %} " rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css" rel="stylesheet' %}">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Mentor
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="/loginhome">ShareStudy Hub</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="{%static '{% static 'assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          {% comment %} <li><a class="nav-link" href="/loginhome">Home</a></li> {% endcomment %}
+          {% comment %} <li class="dropdown"><a href="#"><span>Exam</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Examination</a></li>
+              <li><a href="#">Exam Certificate</a></li>
+                
+              </li>
+              
+            </ul>
+          </li>
+          <li><a href="events.html">Notes</a></li> {% endcomment %}
+          {% comment %} <li><a href="{% url 'assignstu_list' %}">Assignments</a></li> {% endcomment %}
+          {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
+          {% comment %} <li><a href="{% url 'orders' %}">Orders</a></li> {% endcomment %}
+          <li><a href="{% url 'cart_page' %}"> Add To Cart</a></li>
+          {% comment %} <li><a href="{% url 'wishlist' %}">Wishlist</a></li> {% endcomment %}
+          <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li><br><li>
+          
+
+    </div>
+  </header><!-- End Header -->
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Now</title>
+    <title> Address</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        form {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            background-color: #fff;
-            color: #555;
-        }
-
-        button {
+        /* Button styles */
+        .button {
             background-color: #4CAF50;
             border: none;
             color: white;
@@ -66,57 +94,33 @@
             transition: background-color 0.3s ease;
         }
 
-        button:hover {
+        .button:hover {
             background-color: #45a049;
         }
-
-        .error-message {
-            color: red;
-            font-size: 14px;
-        }
     </style>
+    
 </head>
+  <br><br><br><br><br><br><br>
+  <h3>Step 2 : Payment</h3><br><br>
 <body>
     <div class="container">
-        <form id="address-form" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-        
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="{{ user_profile.name }}" required>
-            <span class="error-message" id="name-error"></span>
-            
-            <label for="mobile">Mobile Number:</label>
-            <input type="text" id="mobile" name="mobile" value="{{ user_profile.mobile }}" required>
-            <span class="error-message" id="mobile-error"></span>
-            
-            <label for="pincode">Pincode:</label>
-            <input type="text" id="pincode" name="pincode" value="{{ user_profile.pincode }}" required>
-            <span class="error-message" id="pincode-error"></span>
-            
-            <label for="locality">Locality:</label>
-            <input type="text" id="locality" name="locality" value="{{ user_profile.locality }}" required>
-            <span class="error-message" id="locality-error"></span>
-            
-            <label for="address">Address:</label>
-            <textarea id="address" name="address" rows="4" required>{{ user_profile.address }}</textarea>
-            <span class="error-message" id="address-error"></span>
-            
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city" value="{{ user_profile.city }}" required>
-            <span class="error-message" id="city-error"></span>
-            
-            <label for="state">State:</label>
-            <input type="text" id="state" name="state" value="{{ user_profile.state }}" required>
-            <span class="error-message" id="state-error"></span>
-            
-            <label for="address-type">Address Type:</label>
-            <select id="address-type" name="address-type" required>
-                <option value="home" {% if user_profile.address_type == "home" %} selected {% endif %}>Home</option>
-                <option value="work" {% if user_profile.address_type == "work" %} selected {% endif %}>Work</option>
-            </select>
-            
-            <button type="submit">Save and Deliver Here</button>
-        </form>
-    </div>
+    <form action="success" method="POST">
+        {% csrf_token %}
+        <script
+            src="https://checkout.razorpay.com/v1/checkout.js"
+            data-key="rzp_test_LxNK7J7SzQhQFe"
+            data-amount="{{ total_price }}"
+            data-currency="INR"
+            data-order_id="{{payment.id}}"
+            data-buttontext="Pay with Razorpay"
+            data-name="Acme Corp"
+            data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+            data-image="https://example.com/your_logo.jpg"
+            data-prefill.name="Subin Tom"
+            data-prefill.email="subintom1111@gmail.com"
+            data-theme.color="#F37254"
+        ></script>
+    </form>
+</div>
 </body>
 </html>
