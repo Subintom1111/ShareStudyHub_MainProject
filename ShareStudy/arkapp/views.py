@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,HttpResponse
-from .models import User 
+from .models import CartItem, User 
 from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.cache import never_cache
 
@@ -893,23 +893,79 @@ def edit_product(request, product_id):
 
 
 
+
+
+
 # views.py
 from django.shortcuts import render
 from .models import Product
 
+from django.shortcuts import render
+from .models import Product
+
 def view_product(request):
-    books = Product.objects.all()
-    return render(request, 'view_product.html', {'books': books})
+    # Retrieve all products from the database
+    search_query = request.GET.get('search_query')
+    products = Product.objects.all()
+    
+
+    if search_query:
+        products = products.filter(title__icontains=search_query)
+    # Pass the products to the template for rendering
+    return render(request, 'view_product.html', {'products': products})
+
+
+
+
+
+
+
+def product_details(request, product_id):
+    # Retrieve the product object based on the provided product_id
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'product_details.html', {'product': product})
+
+
+
+def product_detailssss(request, product_id):
+    # Retrieve the product object based on the provided product_id
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'product_detailssss.html', {'product': product})
+
+
+
+
+
+
+def add_to_cart(request, product_id):
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        product = Product.objects.get(pk=product_id)
+        cart_item, created = CartItem.objects.get_or_create(
+            user=request.user,
+            product=product
+        )
+        cart_item.quantity += quantity
+        cart_item.save()
+        return redirect('cart_page')
+    else:
+        return redirect('view_product.html', product_id=product_id)
+
+
+def cart_page(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+    return render(request, 'cart_page.html', {'cart_items': cart_items})
+
 
 
 
 from django.shortcuts import render
 
-def cart(request):
+def cart_details(request):
     # Logic to retrieve cart items from the database
     # Example: cart_items = Cart.objects.filter(user=request.user)
     # Render the cart template with the cart items
-    return render(request, 'cart.html', {'cart_items': cart})
+    return render(request, 'cart_details.html', {'cart_items': cart_details})
 
 def wishlist(request):
     # Logic to retrieve wishlist items from the database
@@ -924,9 +980,122 @@ def orders(request):
     return render(request, 'orders.html', {'orders': orders})
 
 
+# views.py
+
+from django.shortcuts import render, redirect
+from .models import CartItem, Product
+from django.contrib import messages
+
+def update_cart(request):
+    if request.method == 'POST':
+        # Loop through the POST data to update cart items
+        for key, value in request.POST.items():
+            # Check if the field name contains 'quantity_'
+            if key.startswith('quantity_'):
+                # Extract the product ID from the field name
+                product_id = key.split('_')[1]
+                try:
+                    # Get the product associated with the ID
+                    product = Product.objects.get(id=product_id)
+                    # Update the quantity of the corresponding cart item
+                    cart_item = CartItem.objects.get(product=product, user=request.user)
+                    cart_item.quantity = int(value)
+                    cart_item.save()
+                except Product.DoesNotExist:
+                    # Handle the case where the product does not exist
+                    messages.error(request, f"Product with ID {product_id} does not exist.")
+                except CartItem.DoesNotExist:
+                    # Handle the case where the cart item does not exist
+                    messages.error(request, f"Cart item for product with ID {product_id} does not exist.")
+                except ValueError:
+                    # Handle the case where the quantity value is invalid
+                    messages.error(request, "Invalid quantity value.")
+        
+        # Redirect to the cart page after updating the cart
+        return redirect('cart_page')
+    else:
+        # If the request method is not POST, redirect to the cart page
+        return redirect('cart_page')
 
 
 
+
+# views.py
+
+from django.shortcuts import redirect
+from django.http import HttpResponseNotFound
+from .models import CartItem
+
+def remove_from_cart(request, product_id):
+    try:
+        cart_item = CartItem.objects.get(product_id=product_id)
+        cart_item.delete()
+        return redirect('cart_page')
+    except CartItem.DoesNotExist:
+        return HttpResponseNotFound("CartItem not found.")
+
+
+
+
+from django.shortcuts import render, redirect
+from .models import DeliveryAddress, Product  # Import the Product model
+from django.shortcuts import get_object_or_404
+ # Import the calculate_delivery_charge function
+
+def buy_now(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    
+    # Calculate the book price, delivery charge, and total price
+    book_price = product.price
+    delivery_charge = calculate_delivery_charge(book_price)  # Calculate delivery charge
+    total_price = book_price + delivery_charge
+
+
+    delivery_address = DeliveryAddress.objects.first()
+
+    if request.method == 'POST':
+        # Retrieve the delivery address data from the POST request
+        name = request.POST.get('name')
+        mobile_number = request.POST.get('mobile')
+        pincode = request.POST.get('pincode')
+        locality = request.POST.get('locality')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        address_type = request.POST.get('address-type')
+        
+        # Save the delivery address data to the database
+        delivery_address = DeliveryAddress.objects.create(
+            name=name,
+            mobile_number=mobile_number,
+            pincode=pincode,
+            locality=locality,
+            address=address,
+            city=city,
+            state=state,  # Ensure the state value is correctly retrieved
+            address_type=address_type
+        )
+
+        # Redirect to a thank you page or order confirmation page
+        return redirect('buy_now', product_id=product_id)   # Update the redirect URL accordingly
+
+    context = {
+        'product_id': product_id,
+        'book_price': book_price,
+        'delivery_charge': delivery_charge,
+        'total_price': total_price,
+        'delivery_address': delivery_address
+    }
+    return render(request, 'buy_now.html', context)
+
+# utils.py
+
+def calculate_delivery_charge(book_price):
+    # Your logic to calculate delivery charge based on book price goes here
+    if book_price >= 300:
+        return 0
+    else:
+        return 40
 
 
 # views.py

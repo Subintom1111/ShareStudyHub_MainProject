@@ -1,3 +1,8 @@
+{% extends 'adminnav.html' %}
+
+{% block body %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,30 +98,23 @@
                 <label for="quantity">Quantity:</label>
                 <input type="text" id="quantity" name="quantity" value="{{ product.quantity }}" required>
             </div>
-            <div>
+            <div class="form-group">
                 <label for="category">Category:</label>
-                <input type="text" id="category" name="category" value="{{ product.category }}" required>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="Fiction" {% if product.category == 'Fiction' %} selected {% endif %}>Fiction</option>
+                    <option value="Non-fiction" {% if product.category == 'Non-fiction' %} selected {% endif %}>Non-fiction</option>
+                    <option value="Edited (non-fiction)" {% if product.category == 'Edited (non-fiction)' %} selected {% endif %}>Edited (non-fiction)</option>
+                    <option value="Reference (non-fiction)" {% if product.category == 'Reference (non-fiction)' %} selected {% endif %}>Reference (non-fiction)</option>
+                    <!-- Add more options as needed -->
+                </select>
             </div>
-            <div>
-                <label for="image">Image:</label>
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="Product Image" style="max-width: 200px;">
-                    <button type="button" onclick="clearImage()">Clear Image</button>
-                    <input type="hidden" id="clear_image" name="clear_image" value="0">
-                {% else %}
-                    <input type="file" id="image" name="image">
-                {% endif %}
-            </div>
-            
+            <br><br>
             <button type="submit">Save Changes</button>
         </form>
     </div>
-
-    <script>
-        function clearImage() {
-            document.getElementById('clear_image').value = '1';
-            document.getElementById('image').value = ''; // Clear the file input
-        }
-    </script>
 </body>
 </html>
+
+
+{% endblock body %}

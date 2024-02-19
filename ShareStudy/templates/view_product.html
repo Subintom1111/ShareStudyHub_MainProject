@@ -65,26 +65,21 @@
           {% comment %} <li><a href="{% url 'assignstu_list' %}">Assignments</a></li> {% endcomment %}
           {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
           <li><a href="{% url 'orders' %}">Orders</a></li>
-          <li><a href="{% url 'cart' %}"> Add To Cart</a></li>
+          <li><a href="{% url 'cart_page' %}"> Add To Cart</a></li>
           <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
           <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li><br><li>
-          <li>
-            {% if user.is_authenticated %}
-                <li><h6 class="font-weight-bold" style="color: black;">Welcome, {{ user.first_name }}</h6></li>
-            {% else %}
-                <li><h6 class="font-weight-bold" style="color: black;">Welcome, Please Log in</h6></li>
-            {% endif %}
-          </li>
+          
 
     </div>
   </header><!-- End Header -->
 <br><br><br><br><br><br><br>
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Books</title>
+    <title>All Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -94,81 +89,227 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1500px;
             margin: 50px auto;
-        }
-
-        .book {
-            display: inline-block;
-            width: 200px;
-            margin: 10px;
-        }
-
-        .book img {
-            width: 100%;
-            height: auto;
-            cursor: pointer;
-        }
-
-        .book-details {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
         }
 
-        .book-details.active {
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .product {
+            margin-bottom: 40px;
+            border: 1px solid #ccc; /* Add border */
+            border-radius: 8px; /* Add border radius */
+            padding: 20px; /* Add padding */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product-details {
+            flex: 0 0 calc(50% - 10px); /* Adjust width based on desired spacing */
+            margin-bottom: 20px;
+            font-size: 20px; /* Adjust the font size as needed */
+        }
+        
+
+        .product-details label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .product-details p {
+            margin: 5px 0;
+            font-weight: bold; /* Make the text bold */
+        }
+
+        .product-image {
+            width: 150px; /* Adjust the width as needed */
+            height: auto;
+            margin-left: auto; /* Align to the right */
             display: block;
+            margin-bottom: 20px;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
+        .edit-option {
+            text-align: ;
         }
+        
+        .green-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        
+        .edit-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .items{
+            align-items: vertical;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .search-form {
+            display: inline-block;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            padding: 10px;
+            width: 200px;
+            border: none;
+            outline: none;
+            float: left;
+        }
+        
+        .search-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            float: right;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Centered buttons */
+        .centered-buttons {
+            text-align: center;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start; /* Align buttons to the left */
+        }
+        
+
+        .buy-now-button, .add-to-cart-button {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Buy Now button */
+        .buy-now-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Add to Cart button */
+        .add-to-cart-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Button icon */
+        .button-icon {
+            margin-right: 5px;
+        }
+        
     </style>
 </head>
 <body>
     <div class="container">
-        <center><h1>Available Books</h1></center>
-        <div class="books">
-            {% for book in books %}
-                <div class="book">
-                    <img src="{{ product.image.url }}" alt="{{ product.title }}" onclick="showBookDetails('{{ product.title }}', '{{ product.author }}', '{{ product.description }}', '{{ product.price }}')">
+        <h1>All Products</h1>
+        <br><center>
+            <div class="search-container">
+                <form action="{% url 'view_product' %}" method="GET" class="search-form">
+                    <input type="text" name="search_query" placeholder="Search products..." class="search-input">
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+            </div>
+            
+    </center><br><br>
+        {% for product in products %}
+            <div class="product">
+                
+                <!-- Product details -->
+                <div class="items">
+                    <div class="product-details">
+                        <label>Title:</label>
+                        <p>{{ product.title }}</p>
+                    </div>
+                    <div class="product-details">
+                        <label>Stock:</label>
+                        <p>{{ product.quantity }}</p>
+                    </div>
+                    <div class="product-details">
+                        <label>Price:</label>
+                        <p>{{ product.price }}</p>
+                    </div>
+                    <!-- Buy Now button -->
+                    <div class="button-container">
+                        <div class="edit-option">
+                            <form action="{% url 'buy_now' product.id %}" method="get">
+                                <button type="submit" class="green-button buy-now-button">
+                                    <span class="button-icon"><i class="fas fa-shopping-cart"></i></span>Buy Now
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
-        </div>
+                
+                <div class="product-image">
+                    {% if product.image %}
+                        <a href="{% url 'product_detailssss' product.id %}">
+                            <img src="{{ product.image.url }}" alt="Book Image" class="product-image">
+                        </a>
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                    <!-- Add to Cart button -->
+                    <div class="button-container">
+                        <div class="edit-option">
+                            <!-- This form allows users to specify the quantity and add the product to their cart -->
+                            <form method="post" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
+                                {% csrf_token %}
+                                <div class="quantity-input">
+                                    <input type="number" name="quantity" value="1" min="1" class="form-control">
+                                </div><br>
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        {% endfor %}
     </div>
-
-    <div class="book-details-overlay" onclick="hideBookDetails()"></div>
-    <div class="book-details" id="bookDetails">
-        <span class="close-btn" onclick="hideBookDetails()">X</span>
-        <h2 id="bookTitle"></h2>
-        <p><strong>Author:</strong> <span id="bookAuthor"></span></p>
-        <p><strong>Description:</strong> <span id="bookDescription"></span></p>
-        <p><strong>Price:</strong> <span id="bookPrice"></span></p>
-    </div>
-
-    <script>
-        function showBookDetails(title, author, description, price) {
-            document.getElementById('bookTitle').innerText = title;
-            document.getElementById('bookAuthor').innerText = author;
-            document.getElementById('bookDescription').innerText = description;
-            document.getElementById('bookPrice').innerText = price;
-            document.querySelector('.book-details').classList.add('active');
-            document.querySelector('.book-details-overlay').classList.add('active');
-        }
-
-        function hideBookDetails() {
-            document.querySelector('.book-details').classList.remove('active');
-            document.querySelector('.book-details-overlay').classList.remove('active');
-        }
-    </script>
 </body>
 </html>
+

@@ -1,0 +1,241 @@
+<!-- view_notifications.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>ShareStudy Hub Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %} " rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css" rel="stylesheet' %}">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Mentor
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="/loginhome">ShareStudy Hub</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="{%static '{% static 'assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          {% comment %} <li><a class="nav-link" href="/loginhome">Home</a></li> {% endcomment %}
+          {% comment %} <li class="dropdown"><a href="#"><span>Exam</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Examination</a></li>
+              <li><a href="#">Exam Certificate</a></li>
+                
+              </li>
+              
+            </ul>
+          </li>
+          <li><a href="events.html">Notes</a></li> {% endcomment %}
+          {% comment %} <li><a href="{% url 'assignstu_list' %}">Assignments</a></li> {% endcomment %}
+          {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
+          <li><a href="{% url 'orders' %}">Orders</a></li>
+          <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+          <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li><br><li>
+          
+
+    </div>
+  </header><!-- End Header --><br><br><br><br><br><br><br><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .action-link {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        /* Buy Now button */
+        .buy-now-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buy-now-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Button icon */
+        .button-icon {
+            margin-right: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    {% comment %} <form method="post" action="{% url 'update_cart' %}"> {% endcomment %}
+        {% csrf_token %}
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                        <th>Buy Now</th> <!-- New column for Buy Now button -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.title }}</td>
+                        <td>{{ item.product.price }}</td>
+                        <td>
+                            <input type="number" name="quantity_{{ item.product.id }}" value="{{ item.quantity }}" min="1" onchange="updateTotal(this)">
+                        </td>
+                        <td class="total" id="total_{{ item.product.id }}">{{ item.total }}</td>
+                        <td>
+                            <!-- Template -->
+                            <a href="{% url 'remove_from_cart' product_id=item.product.id %}">Remove</a>
+                        </td>
+                        <td>
+                            <!-- Buy Now button -->
+                            <button type="button" onclick="buyNow({{ item.product.id }})" class="buy-now-button">
+                                <i class="fas fa-shopping-cart button-icon"></i>
+                                Buy Now
+                            </button>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table><br>
+            {% comment %} <button type="submit">Update Cart</button> {% endcomment %}
+        </div>
+    </form>
+
+    <script>
+        function updateTotal(input) {
+            var quantity = parseInt(input.value);
+            var price = parseFloat(input.parentNode.previousElementSibling.textContent);
+            var totalElement = input.parentNode.nextElementSibling;
+            var total = quantity * price;
+            totalElement.textContent = "$" + total.toFixed(2);
+        }
+
+        // Function to handle Buy Now button click
+        function buyNow(productId) {
+            // Perform any necessary actions when the Buy Now button is clicked
+            // For example, you can redirect the user to the checkout page with the selected product
+            window.location.href = "/checkout?product_id=" + productId;
+        }
+
+        // Trigger updateTotal initially for each row
+        document.addEventListener("DOMContentLoaded", function() {
+            var quantityInputs = document.querySelectorAll("input[type='number']");
+            quantityInputs.forEach(function(input) {
+                updateTotal(input);
+            });
+        });
+    </script>
+</body>
+

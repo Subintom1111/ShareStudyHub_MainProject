@@ -1,10 +1,13 @@
+{% extends 'adminnav.html' %}
+
+{% block body %}
+
 <!DOCTYPE html>
-{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Product</title>
+    <title>All Products</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,11 +35,17 @@
             margin-bottom: 40px;
             border-bottom: 1px solid #ccc;
             padding-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
 
         .product-details {
+            flex: 0 0 calc(50% - 10px); /* Adjust width based on desired spacing */
             margin-bottom: 20px;
+            font-size: 20px; /* Adjust the font size as needed */
         }
+        
 
         .product-details label {
             font-weight: bold;
@@ -48,18 +57,19 @@
         }
 
         .product-image {
-            display: block;
-            max-width:50%;
+            width: 150px; /* Adjust the width as needed */
             height: auto;
+            margin-left: auto; /* Align to the right */
+            display: block;
             margin-bottom: 20px;
         }
 
         .edit-option {
-            text-align: center;
+            text-align: ;
         }
         
         .green-button {
-            background-color: #4CAF50; /* Green */
+            background-color: #4CAF50;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -76,6 +86,18 @@
             color: #007bff;
             text-decoration: none;
         }
+        
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .items{
+            align-items: vertical;
+        }
     </style>
 </head>
 <body>
@@ -83,49 +105,49 @@
         <h1>All Products</h1>
         {% for product in products %}
             <div class="product">
+                
                 <!-- Product details -->
-                <div class="product-details">
-                    <label>Title:</label>
-                    <p>{{ product.title }}</p>
+                <div class="items">
+                    <div class="product-details">
+                        <label>Title:</label>
+                        <p>{{ product.title }}</p>
+                    </div>
+                    <div class="product-details">
+                        <label>Stock:</label>
+                        <p>{{ product.quantity }}</p>
+                    </div>
+                    <div class="product-details">
+                        <label>Price:</label>
+                        <p>{{ product.price }}</p>
+                    </div>
+                    <div class="edit-option">
+                        <form action="{% url 'edit_product' product.id %}" method="get">
+                            <button type="submit" class="green-button">Edit</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="product-details">
-                    <label>Author:</label>
-                    <p>{{ product.author }}</p>
-                </div>
-                <div class="product-details">
-                    <label>Description:</label>
-                    <p>{{ product.description }}</p>
-                </div>
-                <div class="product-details">
-                    <label>Price:</label>
-                    <p>${{ product.price }}</p>
-                </div>
-                <div class="product-details">
-                    <label>Quantity:</label>
-                    <p>{{ product.quantity }}</p>
-                </div>
-                <div class="product-details">
-                    <label>Category:</label>
-                    <p>{{ product.category }}</p>
-                </div>
-                <div class="product-details">
-                    <label>Images:</label>
+                
+                <div class="product-image">
+                    
                     {% if product.image %}
-                    <img src="{% static 'product_images/book1_KBRD6We.png' %}" alt="Book Image" class="product-image">
-
+                    <img src="{{ product.image.url }}" alt="Book Image" class="product-image">
                     {% else %}
                         <p>No image available</p>
                     {% endif %}
+                    <div class="edit-option">
+                        <form action="{% url 'product_details' product.id %}" method="get">
+                            <button type="submit" class="green-button">View Details</button>
+                        </form>
+                    </div>
+                   
                 </div>
+        
+               
                 
-                <div class="edit-option">
-                    <form action="{% url 'edit_product' product.id %}" method="get">
-                        <button type="submit" class="green-button">Edit</button>
-                    </form>
-                </div>
-                
+                {% comment %} <a href="{% url 'product_details' product.id %}">View Details</a> {% endcomment %}
             </div>
         {% endfor %}
     </div>
 </body>
 </html>
+{% endblock body %}

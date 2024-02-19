@@ -19,7 +19,7 @@ admin.site.register(Submission),
 admin.site.register(Notification),
 admin.site.register(CourseNotes),
 admin.site.register(Product),
-
+admin.site.register(DeliveryAddress),
 
 
 

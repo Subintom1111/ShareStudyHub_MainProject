@@ -1,0 +1,72 @@
+{% extends 'adminnav.html' %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.title }} Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .product-details {
+            margin-bottom: 20px;
+        }
+
+        .product-details label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .product-details p {
+            margin: 5px 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ product.title }}</h1>
+        <div class="product-details">
+            <label>Author:</label>
+            <p>{{ product.author }}</p>
+        </div>
+        <div class="product-details">
+            <label>Description:</label>
+            <p>{{ product.description }}</p>
+        </div>
+        <div class="product-details">
+            <label>Category:</label>
+            <p>{{ product.category }}</p>
+        </div>
+        
+    </div>
+</body>
+</html>
+{% endblock body %}

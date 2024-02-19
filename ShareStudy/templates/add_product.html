@@ -1,5 +1,7 @@
 <!-- templates/admin/add_product.html -->
+{% extends 'adminnav.html' %}
 
+{% block body %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,7 +106,7 @@
                 <textarea id="description" name="description" rows="4" required></textarea>
             </div>
             <div class="form-group">
-                <label for="price">Price ($):</label>
+                <label for="price">Price:</label>
                 <input type="number" id="price" name="price" step="0.01" min="0" required>
             </div>
             <div class="form-group">
@@ -134,3 +136,4 @@
     </div>
 </body>
 </html>
+{% endblock body %}
