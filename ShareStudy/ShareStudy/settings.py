@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'arkapp.apps.ArkappConfig',
+    'channels'
+    
 
 ]
 
@@ -71,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ShareStudy.wsgi.application'
+ASGI_APPLICATION = 'ShareStudy.asgi.application'
 
 
 # Database
@@ -159,4 +161,17 @@ MESSAGE_TAGS={
     messages.ERROR:'danger', 
 }
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # }
+    }
+}
 
+
+# settings.py
+
+# Set the default auto field to BigAutoField
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

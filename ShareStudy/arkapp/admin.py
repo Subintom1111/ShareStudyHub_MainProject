@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import *
+from .models import Thread, ChatMessage
+
+
  
 class CustomUserAdmin(UserAdmin):
 
@@ -20,7 +23,19 @@ admin.site.register(Notification),
 admin.site.register(CourseNotes),
 admin.site.register(Product),
 admin.site.register(DeliveryAddress),
+admin.site.register(ChatMessage),
 
 
+class ChatMessage(admin.TabularInline):
+    model = ChatMessage
+
+
+class ThreadAdmin(admin.ModelAdmin):
+    inlines = [ChatMessage]
+    class Meta:
+        model = Thread
+
+
+admin.site.register(Thread, ThreadAdmin)
 
 

@@ -115,9 +115,26 @@
                 </select>
                 <div id="category-error" class="error-message"></div>
             </div>
+            <div>
+                <label for="isbn">ISBN:</label>
+                <input type="text" id="isbn" name="isbn" value="{{ product.isbn }}">
+            </div>
+            <div>
+                <label for="publisher">Publisher:</label>
+                <input type="text" id="publisher" name="publisher" value="{{ product.publisher }}">
+            </div>
+            <div>
+                <label for="publication_date">Publication Date:</label>
+                <input type="text" id="publication_date" name="publication_date" value="{{ product.publication_date }}">
+            </div>
+            <div>
+                <label for="language">Language:</label>
+                <input type="text" id="language" name="language" value="{{ product.language }}">
+            </div>
             <br><br>
             <button type="submit">Save Changes</button>
         </form>
+        
         
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -130,7 +147,7 @@
                 const categoryInput = document.getElementById('category');
             
                 // Regex patterns for validation
-                const regexAlphaSpace = /^[A-Za-z\s]+$/;
+                const regexAlphaSpace = /^[A-Za-z0-9\s]+$/;
                 const regexNumeric = /^[0-9]+$/;
             
                 form.addEventListener('submit', function (event) {
@@ -141,8 +158,8 @@
                     if (titleValue === '') {
                         displayError(titleInput, 'Title is required.');
                         isValid = false;
-                    } else if (!regexAlphaSpace.test(titleValue)) {
-                        displayError(titleInput, 'Title cannot contain numbers or symbols.');
+                    } else if (!regexAlphaNumeric.test(titleValue)) {
+                        displayError(titleInput, 'Title cannot contain symbols.');
                         isValid = false;
                     } else {
                         clearError(titleInput);

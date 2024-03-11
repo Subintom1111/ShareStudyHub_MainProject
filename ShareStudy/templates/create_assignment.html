@@ -148,18 +148,31 @@
     <h2>Create Assignment</h2>
     
     <form method="post" action="{% url 'create_assignment' %}">
-        {% csrf_token %}
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
-
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-
-        <label for="deadline">Deadline:</label>
-        <input type="datetime-local" id="deadline" name="deadline" required>
-
-        <input type="submit" value="Create Assignment">
-    </form>
+      {% csrf_token %}
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+  
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required></textarea>
+  
+      <label for="deadline">Deadline:</label>
+      <!-- Set the min attribute dynamically using JavaScript -->
+      <input type="datetime-local" id="deadline" name="deadline" required>
+  
+      <input type="submit" value="Create Assignment">
+  </form>
+  
+  <script>
+      // Get the current date and time
+      var currentDate = new Date();
+  
+      // Format the current date and time as required by datetime-local input
+      var currentDateTime = currentDate.toISOString().slice(0, 16); // Slice to remove seconds and timezone
+  
+      // Set the minimum value of the deadline input to the current date and time
+      document.getElementById("deadline").min = currentDateTime;
+  </script>
+  
 
     <a href="{% url 'assignment_list' %}">Back to Assignment List</a>
 </body>

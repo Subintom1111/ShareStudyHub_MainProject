@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
-
+from django.db.models import Q
 
 
 
@@ -137,6 +137,7 @@ class prepare_exam(models.Model):
 from django.db import models
 
 class Product(models.Model):
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     description = models.TextField()
@@ -144,6 +145,10 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     category = models.CharField(max_length=50)
     image = models.ImageField(upload_to='static/product_images/') # Define ImageField
+    isbn = models.CharField(max_length=13, blank=True, null=True)
+    publisher = models.CharField(max_length=100, blank=True)
+    publication_date = models.DateField(blank=True, null=True)
+    language = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return self.title
@@ -166,3 +171,30 @@ class DeliveryAddress(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     address_type = models.CharField(max_length=20, choices=(('Home', 'Home'), ('Work', 'Work')))
+
+
+
+class ThreadManager(models.Manager):
+    def by_user(self, **kwargs):
+        user = kwargs.get('user')
+        lookup = Q(first_person=user) | Q(second_person=user)
+        qs = self.get_queryset().filter(lookup).distinct()
+        return qs
+    
+class Thread(models.Model):
+    first_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='thread_first_person')
+    second_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
+                                     related_name='thread_second_person')
+    updated = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = ThreadManager()
+    class Meta:
+        unique_together = ['first_person', 'second_person']
+
+
+class ChatMessage(models.Model):
+    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.CASCADE, related_name='chatmessage_thread')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)

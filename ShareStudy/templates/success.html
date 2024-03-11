@@ -64,98 +64,24 @@
           <li><a href="events.html">Notes</a></li> {% endcomment %}
           {% comment %} <li><a href="{% url 'assignstu_list' %}">Assignments</a></li> {% endcomment %}
           {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
-          <li><a href="{% url 'orders' %}">Orders</a></li>
-          <li><a href="{% url 'cart_page' %}"> Add To Cart</a></li>
-          <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+          {% comment %} <li><a href="{% url 'orders' %}">Orders</a></li> {% endcomment %}
+          {% comment %} <li><a href="{% url 'cart_page' %}"> Add To Cart</a></li> {% endcomment %}
+          {% comment %} <li><a href="{% url 'wishlist' %}">Wishlist</a></li> {% endcomment %}
           <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li><br><li>
           
 
     </div>
   </header><!-- End Header -->
-<br><br><br><br><br><br><br><br>
-{% block body %}
-<!DOCTYPE html>
+  <br><br><br><br><br><br>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.title }} Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        .product-details {
-            margin-bottom: 20px;
-        }
-
-        .product-details label {
-            font-weight: bold;
-            color: #555;
-        }
-
-        .product-details p {
-            margin: 5px 0;
-        }
-
-        .product-image {
-            width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
-    </style>
+    <title>Payment Successful</title>
 </head>
-<body>
-    <div class="container">
-        <h1>{{ product.title }}</h1>
-        <div class="product-details">
-            <label>Author:</label>
-            <p>{{ product.author }}</p>
-        </div>
-        <div class="product-details">
-            <label>Description:</label>
-            <p>{{ product.description }}</p>
-        </div>
-        <div class="product-details">
-            <label>Category:</label>
-            <p>{{ product.category }}</p>
-        </div>
-        <div class="product-details">
-            <label>ISBN:</label>
-            <p>{{ product.isbn }}</p>
-        </div>
-        <div class="product-details">
-            <label>Publisher:</label>
-            <p>{{ product.publisher }}</p>
-        </div>
-        <div class="product-details">
-            <label>Publication Date:</label>
-            <p>{{ product.publication_date }}</p>
-        </div>
-        <div class="product-details">
-            <label>Language:</label>
-            <p>{{ product.language }}</p>
-        </div>
-    </div>
-    
+<body><center>
+    <h1>Payment Success</h1><br><br>
+    <p>Your payment has been completed and your order is placed. It will be delivered within a few days.</p></center>
 </body>
 </html>
-{% endblock body %}

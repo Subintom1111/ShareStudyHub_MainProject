@@ -828,41 +828,49 @@ def view_course_notes(request):
 
 
 
-# views.py
-
 from django.shortcuts import render, redirect
-from .models import Product
+from django.http import HttpResponse
+from .models import Product, Courses
 
-
-@never_cache
-@login_required(login_url="login")
 def add_product(request):
     if request.method == 'POST':
-        # Retrieve data from the request
+        course_id = request.POST.get('course')
+        course = Courses.objects.filter(pk=course_id).first()
+
+        if not course:
+            return HttpResponse("Invalid course ID")
+
         title = request.POST.get('title')
         author = request.POST.get('author')
         description = request.POST.get('description')
         price = request.POST.get('price')
         quantity = request.POST.get('quantity')
         category = request.POST.get('category')
-        image = request.FILES.get('image')  # Get the uploaded image
-        
-        # Create a new product object
-        product = Product(
+        isbn = request.POST.get('isbn')
+        publisher = request.POST.get('publisher')
+        publication_date = request.POST.get('publication_date')
+        language = request.POST.get('language')
+        image = request.FILES.get('image')
+
+        product = Product.objects.create(
             title=title,
             author=author,
             description=description,
             price=price,
             quantity=quantity,
             category=category,
+            isbn=isbn,
+            publisher=publisher,
+            publication_date=publication_date,
+            language=language,
+            course=course,
             image=image
         )
-        product.save()  # Save the product object to the database
-        
-        return redirect('adminnew')  # Redirect to the admin dashboard after successful product creation
-    
-    return render(request, 'add_product.html')
 
+        return redirect('adminnew')
+
+    courses = Courses.objects.all()
+    return render(request, 'add_product.html', {'courses': courses})
 
 
 # views.py
@@ -883,10 +891,9 @@ def adminview_product(request):
 
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.dateparse import parse_date  # Import parse_date
 from .models import Product
 
-@never_cache
-@login_required(login_url="login")
 def edit_product(request, product_id):
     # Retrieve the product object from the database
     product = get_object_or_404(Product, id=product_id)
@@ -899,6 +906,20 @@ def edit_product(request, product_id):
         product.price = request.POST.get('price')
         product.quantity = request.POST.get('quantity')
         product.category = request.POST.get('category')
+        product.isbn = request.POST.get('isbn')
+        product.publisher = request.POST.get('publisher')
+        
+        # Parse the publication date to ensure it's in the correct format
+        publication_date = request.POST.get('publication_date')
+        if publication_date:
+            parsed_date = parse_date(publication_date)
+            if parsed_date:
+                product.publication_date = parsed_date.strftime('%Y-%m-%d')
+            else:
+                # Handle invalid date format here
+                pass
+        
+        product.language = request.POST.get('language')
         
         # Check if a new image is uploaded
         if request.FILES.get('image'):
@@ -915,13 +936,10 @@ def edit_product(request, product_id):
 
 
 
-
 # views.py
 from django.shortcuts import render
 from .models import Product
 
-from django.shortcuts import render
-from .models import Product
 
 @never_cache
 @login_required(login_url="login")
@@ -930,14 +948,32 @@ def view_product(request):
     search_query = request.GET.get('search_query')
     products = Product.objects.all()
     
-
     if search_query:
         products = products.filter(title__icontains=search_query)
-    # Pass the products to the template for rendering
-    return render(request, 'view_product.html', {'products': products})
 
+    # Filtering based on form data
+    price_filter = request.GET.get('price_filter')
+    category_filter = request.GET.get('category_filter')
+    language_filter = request.GET.get('language_filter')
 
+    if price_filter:
+        if price_filter == 'low_to_high':
+            products = products.order_by('price')
+        elif price_filter == 'high_to_low':
+            products = products.order_by('-price')
 
+    if category_filter:
+        products = products.filter(category=category_filter)
+
+    if language_filter:
+        products = products.filter(language=language_filter)
+
+    context = {
+        'products': products
+    }
+    return render(request, 'view_product.html', context)
+
+# Define other views here...
 
 
 
@@ -1128,9 +1164,11 @@ def buy_now(request, product_id):
 
 # utils.py
 
+@never_cache
+@login_required(login_url="login")
+def success(request, product_id):
+    return render(request, "success.html", {'product_id': product_id})
 
-def success(request):
-    return render(request,"success.html")
 
 @never_cache
 @login_required(login_url="login")
@@ -1160,6 +1198,18 @@ def payment(request, product_id):
     }
     # Your payment logic goes here
     return render(request, 'payment.html', context)
+
+
+from .models import Thread
+
+def messages_page(request):
+    threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+    context = {
+        'Threads': threads
+    }
+    return render(request, 'messages.html', context)
+
+
 
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404

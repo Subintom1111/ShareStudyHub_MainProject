@@ -89,36 +89,85 @@
         }
 
         .container {
-            max-width: 1500px;
+            max-width: 1200px;
             margin: 50px auto;
+            display: flex;
+        }
+
+        .filter-form {
+            flex: 0 0 25%;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            padding: 20px;
         }
 
-        h1 {
+        .product-list {
+            flex: 0 0 75%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .filter-form h2, .product-list h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        .filter-form form, .search-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-form label, .search-form label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .filter-form select, .search-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .filter-form button, .search-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .filter-form button:hover, .search-button:hover {
+            background-color: #45a049;
         }
 
         .product {
             margin-bottom: 40px;
-            border: 1px solid #ccc; /* Add border */
-            border-radius: 8px; /* Add border radius */
-            padding: 20px; /* Add padding */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
         }
 
         .product-details {
-            flex: 0 0 calc(50% - 10px); /* Adjust width based on desired spacing */
+            flex: 0 0 calc(50% - 10px);
             margin-bottom: 20px;
-            font-size: 20px; /* Adjust the font size as needed */
+            font-size: 20px;
         }
-        
 
         .product-details label {
             font-weight: bold;
@@ -127,95 +176,21 @@
 
         .product-details p {
             margin: 5px 0;
-            font-weight: bold; /* Make the text bold */
+            font-weight: bold;
         }
 
         .product-image {
-            width: 150px; /* Adjust the width as needed */
+            width: 150px;
             height: auto;
-            margin-left: auto; /* Align to the right */
+            margin-left: auto;
             display: block;
             margin-bottom: 20px;
         }
 
-        .edit-option {
-            text-align: ;
-        }
-        
-        .green-button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-        
-        .edit-link {
-            color: #007bff;
-            text-decoration: none;
-        }
-        
-        .btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-        .items{
-            align-items: vertical;
-        }
-        .search-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .search-form {
-            display: inline-block;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .search-input {
-            padding: 10px;
-            width: 200px;
-            border: none;
-            outline: none;
-            float: left;
-        }
-        
-        .search-button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            float: right;
-            transition: background-color 0.3s;
-        }
-        
-        .search-button:hover {
-            background-color: #45a049;
-        }
-
-        /* Centered buttons */
-        .centered-buttons {
-            text-align: center;
-        }
-
         .button-container {
             display: flex;
-            justify-content: flex-start; /* Align buttons to the left */
+            justify-content: flex-start;
         }
-        
 
         .buy-now-button, .add-to-cart-button {
             margin-top: 10px;
@@ -224,41 +199,70 @@
             justify-content: center;
         }
 
-        /* Buy Now button */
         .buy-now-button {
             background-color: #4CAF50;
             color: white;
         }
 
-        /* Add to Cart button */
         .add-to-cart-button {
             background-color: #007bff;
             color: white;
         }
 
-        /* Button icon */
         .button-icon {
             margin-right: 5px;
         }
-        
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>All Products</h1>
-        <br><center>
+        <div class="filter-form">
+            <h2>Filters</h2>
+            <form action="{% url 'view_product' %}" method="GET">
+                <div class="form-group">
+                    <label for="price_filter">Price:</label>
+                    <select name="price_filter" id="price_filter">
+                        <option value="">All</option>
+                        <option value="low_to_high">Low to High</option>
+                        <option value="high_to_low">High to Low</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="category_filter">Category:</label>
+                    <select name="category_filter" id="category_filter">
+                        <option value="">All</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Non-fiction">Non-fiction</option>
+                        <option value="Edited (non-fiction)">Edited (non-fiction)</option>
+                        <option value="Reference (non-fiction)">Reference (non-fiction)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="language_filter">Language:</label>
+                    <select name="language_filter" id="language_filter">
+                        <option value="">All</option>
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                        <option value="Malayalam">Malayalam</option>
+                    </select>
+                </div>
+                <button type="submit">Apply Filters</button>
+            </form>
+        </div>
+        
+        <div class="product-list">
+            <h1>All Products</h1>
             <div class="search-container">
                 <form action="{% url 'view_product' %}" method="GET" class="search-form">
                     <input type="text" name="search_query" placeholder="Search products..." class="search-input">
                     <button type="submit" class="search-button">Search</button>
                 </form>
             </div>
-            
-    </center><br><br>
-        {% for product in products %}
+            {% for product in products %}
             <div class="product">
-                
-                <!-- Product details -->
                 <div class="items">
                     <div class="product-details">
                         <label>Title:</label>
@@ -272,7 +276,6 @@
                         <label>Price:</label>
                         <p>{{ product.price }}</p>
                     </div>
-                    <!-- Buy Now button -->
                     <div class="button-container">
                         <div class="edit-option">
                             <form action="{% url 'buy_now' product.id %}" method="get">
@@ -283,7 +286,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="product-image">
                     {% if product.image %}
                         <a href="{% url 'product_detailssss' product.id %}">
@@ -292,10 +294,8 @@
                     {% else %}
                         <p>No image available</p>
                     {% endif %}
-                    <!-- Add to Cart button -->
                     <div class="button-container">
                         <div class="edit-option">
-                            <!-- This form allows users to specify the quantity and add the product to their cart -->
                             <form method="post" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
                                 {% csrf_token %}
                                 <div class="quantity-input">
@@ -305,11 +305,10 @@
                             </form>
                         </div>
                     </div>
-                    
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>
-

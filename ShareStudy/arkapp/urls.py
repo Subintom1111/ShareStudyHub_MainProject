@@ -76,6 +76,8 @@ urlpatterns = [
     path('orders/', views.orders, name='orders'),
     path('buy_now/<int:product_id>/', views.buy_now, name='buy_now'),
     path('payment/<int:product_id>/', views.payment, name='payment'),
+    path('payment/<int:product_id>/success', views.success, name='success'),
+    path('chat/', views.messages_page, name='messages_page'),
 ]
 
 
