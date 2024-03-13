@@ -59,6 +59,7 @@
                 <th>Student</th>
                 <th>Message</th>
                 <th>Timestamp</th>
+                <th>Sentiment Rating</th>
             </tr>
         </thead>
         <tbody>
@@ -67,10 +68,113 @@
                     <td>{{ feedback.student.first_name }}</td>
                     <td>{{ feedback.message }}</td>
                     <td>{{ feedback.timestamp }}</td>
+                    <td>{{ feedback.id }}</td>
+                    <td> 
+                        <span id="stars{{ feedback.id }}"></span> 
+                        <script>
+                            // JavaScript code to calculate and display stars
+                            var starsContainer = document.getElementById('stars{{ feedback.id }}');
+                            var sentimentRating = {{ feedback.sentiment_rating|default:0 }}; // Corrected reference to sentiment_rating
+
+                            if (starsContainer) {
+                                var stars = calculateStars(sentimentRating);
+                                for (var i = 0; i < 5; i++) {
+                                    var star = document.createElement('i');
+                                    star.className = 'fas fa-star';
+                                    if (i < stars) {
+                                        if (stars === 5 || stars === 4) {
+                                            star.style.color = 'green';
+                                        } else if (stars === 3) {
+                                            star.style.color = 'yellow';
+                                        } else {
+                                            star.style.color = 'red';
+                                        }
+                                    }
+                                    starsContainer.appendChild(star);
+                                }
+                            } else {
+                                console.log('Element not found for review ID: {{ feedback.id }}');
+                            }
+
+                            // Function to calculate stars based on sentiment rating
+                            function calculateStars(sentimentRating) {
+                                if (sentimentRating >= 0.8) {
+                                    return 5;
+                                } else if (0.6 <= sentimentRating && sentimentRating < 0.8) {
+                                    return 4;
+                                } else if (0.4 <= sentimentRating && sentimentRating < 0.6) {
+                                    return 3;
+                                } else if (-0.6 <= sentimentRating && sentimentRating < 0.4) {
+                                    return 2;
+                                } else if (sentimentRating < -0.6) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            }
+                        </script>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    {% comment %} <script>
+        // JavaScript code to calculate and display stars
+        var starsContainer = document.getElementById('stars{{ feedback.id }}');
+        
+        // Ensure the element is found before proceeding
+        if (starsContainer) {
+            console.log('Element found:', starsContainer);
+            
+            var sentimentRating = {{ review.sentiment_rating|default:0 }};
+            console.log('Sentiment Rating:', sentimentRating);
+            
+            var stars = calculateStars(sentimentRating);
+            console.log('Stars:', stars);
+            
+            for (var i = 0; i < 5; i++) {
+                var star = document.createElement('i');
+                star.className = 'fas fa-star';
+                
+                // Color logic based on the number of stars
+                if (i < stars) {
+                    if (stars === 5 || stars === 4) {
+                        star.style.color = 'green';
+                    } else if (stars === 3) {
+                        star.style.color = 'yellow';
+                    } else {
+                        star.style.color = 'red';
+                    }
+                }
+                
+                starsContainer.appendChild(star);
+            }
+        } else {
+            console.log('Element not found for review ID:', {{ feedback.id }});
+        }
+
+        // Function to calculate stars based on sentiment rating
+        function calculateStars(sentimentRating) {
+            if (sentimentRating >= 0.8) {
+                return 5;
+            } else if (0.6 <= sentimentRating && sentimentRating < 0.8) {
+                return 4;
+            } else if (0.4 <= sentimentRating && sentimentRating < 0.6) {
+                return 3;
+            } else if (-0.6 <= sentimentRating && sentimentRating < 0.4) {
+                return 2;
+            } else if (sentimentRating < -0.6) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        
+   
+    </script> {% endcomment %}
+    <script src="https://kit.fontawesome.com/0c1a238acd.js" crossorigin="anonymous"></script>
     {% endblock body %}
 </body>
 </html>

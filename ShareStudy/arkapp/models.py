@@ -58,13 +58,22 @@ class Courses(models.Model):
 
 
 
-
+from textblob import TextBlob
 from django.db import models
 
 class Feedback(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)  # Assuming you have a User model
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    sentiment_rating = models.FloatField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Calculate sentiment rating using textblob
+        blob = TextBlob(self.message)  # Corrected variable name
+        self.sentiment_rating = blob.sentiment.polarity
+        super().save(*args, **kwargs)  # Removed non-printable character
+
+
 
 
 

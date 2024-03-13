@@ -90,7 +90,9 @@ urlpatterns = [
     path('addquestion/', views.addquestion, name='addquestion'),
     path('delete-question/<int:question_id>/', views.delete_question, name='delete_question'),
     path('exams/', views.exams, name='exams'),
-     path('start-exam/<int:topic_id>/', views.start_exam, name='start_exam'),
+    path('start-exam/<int:topic_id>/', views.start_exam, name='start_exam'),
+    path('submit-exam/', views.submit_exam, name='submit_exam'),
+    path('submit_exam/<int:id>/', views.submit_exam, name='submit_exam'),
 
 ]
 

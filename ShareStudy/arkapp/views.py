@@ -1447,6 +1447,69 @@ def exams(request):
 
 
 
+
+from django.shortcuts import render
+
+def submit_exam(request, id):
+    # Your logic to retrieve exam details based on the id
+    # For example, you might retrieve exam questions, total marks, etc.
+    # Replace this example with your actual logic to fetch exam details
+
+    # Assuming you have a function to fetch exam details based on the id
+    exam_details = get_exam_details_by_id(id)
+
+    # Example exam details (replace this with actual fetched details)
+    topic = exam_details['topic']
+    total_questions = exam_details['total_questions']
+    total_marks = exam_details['total_marks']
+    questions = exam_details['questions']
+    duration = exam_details['duration']
+
+    if request.method == 'POST':
+        # Assuming 'questions' is a list of dictionaries containing question and answer data
+        # Here you can access the POST data and process the exam submission
+        # For example, checking user answers and calculating score
+
+        # Your code to process the exam submission
+        # Replace this example with your actual logic to process exam submission
+
+        correct_count = 0
+        for question in questions:
+            user_answer = request.POST.get('answer_' + str(question['id']))
+            if user_answer == question['correct_answer']:
+                correct_count += 1
+
+        # Calculate percentage
+        percentage = (correct_count / total_questions) * 100
+
+        context = {
+            'total_questions': total_questions,
+            'correct_count': correct_count,
+            'percentage': percentage,
+            # You can pass more data to the template if needed
+        }
+        return render(request, 'exam_result.html', context)
+
+    # If the request method is not POST, render the exam page with the fetched details
+    context = {
+        'topic': topic,
+        'total_questions': total_questions,
+        'total_marks': total_marks,
+        'questions': questions,
+        'duration': duration,
+    }
+    return render(request, 'exam.html', context)
+
+
+
+
+
+
+
+
+
+
+
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Courses, prepare_exam
