@@ -198,3 +198,44 @@ class ChatMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+
+class AptitudeTestCourse(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+    
+
+class AddTopic(models.Model):
+    course = models.ForeignKey(AptitudeTestCourse, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    total_questions = models.IntegerField()
+    total_marks = models.IntegerField()
+    duration = models.IntegerField()  # Duration in minutes
+    live_test = models.CharField(max_length=3, choices=[('Yes', 'Yes'), ('No', 'No')])
+
+    def __str__(self):
+        return self.name
+    
+
+from django.db import models
+
+class AddQuestion(models.Model):
+    course_name = models.ForeignKey(AptitudeTestCourse, on_delete=models.CASCADE)
+    topic_name = models.ForeignKey(AddTopic, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=255)
+    option1 = models.CharField(max_length=100)
+    option2 = models.CharField(max_length=100)
+    option3 = models.CharField(max_length=100)
+    option4 = models.CharField(max_length=100)
+    correct_answer = models.CharField(max_length=100)
+    marks = models.IntegerField()
+
+    def __str__(self):
+        return self.question_text
+    
+
+

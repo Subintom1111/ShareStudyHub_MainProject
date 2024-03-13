@@ -1,0 +1,195 @@
+{% extends 'adminnav.html' %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Topics</title>
+    {% block body %}
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .description-symbol {
+            cursor: pointer;
+            color: #28a745;
+            text-decoration: none;
+        }
+        .delete-btn {
+            background-color: #dc3545; /* Red color */
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .delete-btn:hover {
+            background-color: #c82333; /* Darker red color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All Topics</h1>
+        <button class="btn" onclick="location.href='{% url 'AddTopic' %}'">Add Topic</button>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Topic Name</th>
+                    <th>Total Questions</th>
+                    <th>Total Marks</th>
+                    <th>Description</th>
+                    <th>Live Test</th>
+                    <th>Edit</th>
+                    <th>Delete</th> <!-- New column for delete button -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for topic in topics %}
+                <tr>
+                    <td>{{ topic.course.name }}</td>
+                    <td>{{ topic.name }}</td> 
+                    <td>{{ topic.total_questions }}</td>
+                    <td>{{ topic.total_marks }}</td>
+                    <td><span class="description-symbol" onclick="showDescription('{{ topic.description }}')">?</span></td>
+                    <td>{{ topic.live_test }}</td>
+                    <td><a href="{% url 'edit_topic' topic.id %}">Edit</a></td>
+                    <td>
+                        <form class="delete-form" action="{% url 'delete_topic' topic.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" class="delete-btn" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Popup box for description -->
+        <div id="popup" class="popup">
+            <span class="close" onclick="hideDescription()">×</span>
+            <p id="description-content"></p>
+        </div>
+    </div>
+
+    <!-- JavaScript for popup functionality and deletion -->
+    <!-- JavaScript for popup functionality and deletion -->
+<script>
+    function showDescription(description) {
+        document.getElementById("description-content").innerHTML = description;
+        document.getElementById("popup").style.display = "block";
+    }
+
+    function hideDescription() {
+        document.getElementById("popup").style.display = "none";
+    }
+
+    function deleteTopic(topicId) {
+        if (confirm("Are you sure you want to delete this topic?")) {
+            // Perform AJAX request to delete endpoint
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/delete_topic/" + topicId, true);
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("Topic deleted:", topicId);
+                        window.location.reload();  // Reload the page after deletion
+                    } else {
+                        console.error("Failed to delete topic:", xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+        } else {
+            console.log("Deletion canceled");
+        }
+    }
+
+    // Function to get CSRF token for POST requests
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock body %}
+</body>
+</html>

@@ -24,7 +24,9 @@ admin.site.register(CourseNotes),
 admin.site.register(Product),
 admin.site.register(DeliveryAddress),
 admin.site.register(ChatMessage),
-
+admin.site.register(AptitudeTestCourse),
+admin.site.register(AddTopic),
+admin.site.register(AddQuestion),
 
 class ChatMessage(admin.TabularInline):
     model = ChatMessage

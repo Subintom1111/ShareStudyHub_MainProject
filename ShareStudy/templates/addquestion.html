@@ -1,0 +1,113 @@
+
+{% extends 'adminnav.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Question</title>
+    {% block body %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            width: 50%;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Question</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="course">Course:</label>
+            <select id="course" name="course">
+                <option value="">Select a course</option> <!-- Default option -->
+                {% for course in courses %}
+                <option value="{{ course.id }}">{{ course.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="topic">Topic:</label>
+            <select id="topic" name="topic">
+                <option value="">Select a topic</option> <!-- Default option -->
+                {% for topic in topics %}
+                <option value="{{ topic.id }}">{{ topic.name }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="question_text">Question:</label>
+            <input type="text" id="question_text" name="question_text" maxlength="255" required>
+            <label for="option1">Option 1:</label>
+            <input type="text" id="option1" name="option1" maxlength="100" required>
+            <label for="option2">Option 2:</label>
+            <input type="text" id="option2" name="option2" maxlength="100" required>
+            <label for="option3">Option 3:</label>
+            <input type="text" id="option3" name="option3" maxlength="100" required>
+            <label for="option4">Option 4:</label>
+            <input type="text" id="option4" name="option4" maxlength="100" required>
+            <label for="correct_answer">Correct Answer:</label>
+            <select id="correct_answer" name="correct_answer" required>
+                <option value="" selected disabled>Select correct answer</option>
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+                <option value="option4">Option 4</option>
+            </select>
+            <label for="marks">Marks:</label>
+            <input type="number" id="marks" name="marks" min="1" required>
+            <button type="submit">Add Question</button>
+        </form>
+    </div>
+    {% endblock body %}
+</body>
+</html>

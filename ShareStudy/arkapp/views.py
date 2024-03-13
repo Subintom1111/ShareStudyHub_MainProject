@@ -1211,6 +1211,242 @@ def messages_page(request):
 
 
 
+def AptitudeTestCo(request):
+    courses = AptitudeTestCourse.objects.all()
+    return render(request, 'AptitudeTestCo.html',{'courses': courses})
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import AptitudeTestCourse
+
+def delete_Co(request, topic_id):
+    courses= get_object_or_404(AptitudeTestCourse, pk=topic_id)
+    if request.method == 'POST':
+        courses.delete()
+        return redirect('AptitudeTestCo')  # Redirect to the view displaying all topics
+    return render(request, 'AptitudeTestCo.html', {'courses': courses})
+
+
+from django.shortcuts import render, redirect
+from .models import AptitudeTestCourse
+
+def AptitudeTestCourses(request):
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        AptitudeTestCourse.objects.create(name=name)
+        return redirect('AptitudeTestCourses')  # Redirect to the same page after adding the course
+
+    
+    
+    return render(request, 'AptitudeTestCourse.html')
+
+def Top(request):
+    topics = AddTopic.objects.all()
+    return render(request, 'AddTo.html',{'topics': topics})
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import AddTopic
+
+def delete_topic(request, topic_id):
+    topic = get_object_or_404(AddTopic, pk=topic_id)
+    if request.method == 'POST':
+        topic.delete()
+        return redirect('AddTo')  # Redirect to the view displaying all topics
+    return render(request, 'AddTo.html', {'topic': topic})
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import AddTopic
+
+def edit_topic(request, topic_id):
+    topic = get_object_or_404(AddTopic, pk=topic_id)
+    
+    if request.method == 'POST':
+        total_questions = request.POST.get('total_questions')
+        total_marks = request.POST.get('total_marks')
+        topic.total_questions = total_questions
+        topic.total_marks = total_marks
+        topic.save()
+        return redirect('AddTo')  # Redirect to the topic list page after editing
+    
+    return render(request, 'edit_topic.html', {'topic': topic})
+
+
+
+
+from django.shortcuts import render, redirect
+from .models import AptitudeTestCourse, AddTopic
+
+def Topic(request):
+    topics = AddTopic.objects.all()
+    if request.method == 'POST':
+        course_id = request.POST.get('course')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        total_questions = request.POST.get('total_questions')
+        total_marks = request.POST.get('total_marks')
+        duration = request.POST.get('duration')
+        live_test = request.POST.get('live_test')
+
+        # Check if course_id is empty or missing
+        if course_id:
+            try:
+                course = AptitudeTestCourse.objects.get(id=course_id)
+            except AptitudeTestCourse.DoesNotExist:
+                course = None
+        else:
+            course = None
+
+        # Create a new Topic object if course is valid
+        if course:
+            topic = AddTopic.objects.create(
+                course=course,
+                name=name,
+                description=description,
+                total_questions=total_questions,
+                total_marks=total_marks,
+                duration=duration,
+                live_test=live_test
+            )
+            # Redirect to a different page after successful submission
+            return redirect('AddTopic')
+        else:
+            # Handle case where course is not found
+            error_message = "Course not found. Please select a valid course."
+            courses = AptitudeTestCourse.objects.all()
+            return render(request, 'AddTopic.html', {'courses': courses, 'error_message': error_message})
+    else:
+        # Render the form with available courses
+        courses = AptitudeTestCourse.objects.all()
+        return render(request, 'AddTopic.html', {'courses': courses})
+
+
+def AvailableExams(request):
+    topics = AddTopic.objects.all()
+    return render(request, 'AvailableExams.html',{'topics': topics})
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import AddTopic
+
+def delete_exam(request, topic_id):
+    topic = get_object_or_404(AddTopic, pk=topic_id)
+    if request.method == 'POST':
+        topic.delete()
+        return redirect('AvailableExams')  # Redirect to the view displaying all topics
+    return render(request, 'AvailableExams', {'topic': topic})
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import AddQuestion, AddTopic
+
+def questions(request, topic_id):
+    # Fetch the topic object based on the topic_id
+    topic = get_object_or_404(AddTopic, pk=topic_id)
+    # Fetch questions related to the topic
+    questions = AddQuestion.objects.filter(course_name=topic.course, topic_name=topic)
+    # Pass the questions to the HTML template for display
+    return render(request, 'questions.html', {'questions': questions})
+
+
+def delete_question(request, question_id):
+    # Get the question object
+    question = get_object_or_404(AddQuestion, pk=question_id)
+    
+    if request.method == 'POST':
+        # Delete the question
+        question.delete()
+        # Redirect to the same page after deletion
+        return redirect('questions', topic_id=question.topic_name.id)
+
+    # Render the page (this part won't be executed if the request method is POST)
+    return render(request, 'questions.html')
+
+
+
+from django.shortcuts import render, redirect
+from .models import AptitudeTestCourse, AddTopic, AddQuestion
+
+def addquestion(request):
+    if request.method == 'POST':
+        # Retrieve form data from the POST request
+        course_id = request.POST.get('course')
+        topic_id = request.POST.get('topic')
+        question_text = request.POST.get('question_text')
+        option1 = request.POST.get('option1')
+        option2 = request.POST.get('option2')
+        option3 = request.POST.get('option3')
+        option4 = request.POST.get('option4')
+        correct_answer = request.POST.get('correct_answer')
+        marks = request.POST.get('marks')
+
+        # Create a new AddQuestion instance and save it to the database
+        AddQuestion.objects.create(
+            course_name_id=course_id,
+            topic_name_id=topic_id,
+            question_text=question_text,
+            option1=option1,
+            option2=option2,
+            option3=option3,
+            option4=option4,
+            correct_answer=correct_answer,
+            marks=marks
+        )
+
+        return redirect('addquestion')  # Redirect to a success page
+    
+    # If the request method is not POST, render the form page
+    courses = AptitudeTestCourse.objects.all()
+    topics = AddTopic.objects.all()
+    return render(request, 'addquestion.html', {'courses': courses, 'topics': topics})
+
+
+from django.shortcuts import render, get_object_or_404
+from datetime import datetime, timedelta
+from random import sample
+from .models import AddTopic, AddQuestion
+
+def start_exam(request, topic_id):
+    # Fetch the topic and questions related to the topic
+    topic = get_object_or_404(AddTopic, pk=topic_id)
+    all_questions = AddQuestion.objects.filter(course_name=topic.course, topic_name=topic)
+
+    # Calculate total number of questions and total marks
+    total_questions = topic.total_questions
+    total_marks = topic.total_marks
+
+    # Randomly select the required number of questions from the available set
+    selected_questions = sample(list(all_questions), total_questions)
+
+    # Set duration time to 00 for the exam
+    end_time = datetime.now()
+
+    # Render the exam timer page with exam details and selected questions
+    return render(request, 'timer_display.html', {
+        'topic': topic,
+        'total_questions': total_questions,
+        'total_marks': total_marks,
+        'questions': selected_questions,
+        'end_time': end_time,
+        'duration': 0
+    })
+
+
+def exams(request):
+    # Fetch all topics
+    topics = AddTopic.objects.all()
+    return render(request, 'exams.html', {'topics': topics})
+
+
+
+
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Courses, prepare_exam
@@ -1252,6 +1488,3 @@ def prepare_exams(request):
 
 
 
-def questions(request, pk):
-    # Your view logic here
-    return HttpResponse("Questions for PK: {}".format(pk))
