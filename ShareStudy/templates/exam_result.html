@@ -4,14 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Result</title>
-    <!-- Add your CSS styles here if needed -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .result-info {
+            margin-top: 30px;
+        }
+
+        .result-info p {
+            margin-bottom: 10px;
+        }
+
+        .result-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Exam Result</h1>
-        <p>Total Questions: {{ topic.total_questions }}</p>
-        <p>Correct Answers: {{ correct_count }}</p>
-        <p>Percentage: {{ percentage }}%</p>
+        <div class="result-info">
+            <p>Your Score: <strong>{{ percentage }}%</strong></p>
+            <p>Total Number of Questions: <strong>{{ total_questions }}</strong></p>
+            <p>Total Marks: <strong>{{ total_marks }}</strong></p>
+            <!-- You can add more details or customize the result display as needed -->
+        </div>
     </div>
 </body>
 </html>

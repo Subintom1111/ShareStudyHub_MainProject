@@ -53,7 +53,7 @@
         }
         button[type="submit"] {
             width: 50%;
-            background-color: #007bff;
+            background-color: #333;
             color: #fff;
             padding: 10px;
             border: none;
@@ -79,7 +79,7 @@
         }
     </style>
 </head>
-<body>
+<body><br>
     <div class="container">
         <h1>Add Topic</h1>
         
@@ -88,11 +88,12 @@
             <form method="post">
                 {% csrf_token %}
                 <label for="course">Course Name:</label>
-                <select id="course" name="course">
+                <select id="course" name="course" required>
+                    <option value="" disabled selected>Select a course</option>
                     {% for course in courses %}
                     <option value="{{ course.id }}">{{ course.name }}</option>
                     {% endfor %}
-                </select>
+                </select>                
                 <label for="name">Topic Name:</label>
                 <input type="text" id="name" name="name" maxlength="100" required>
                 <label for="description">Description:</label>

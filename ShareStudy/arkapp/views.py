@@ -1385,7 +1385,21 @@ def addquestion(request):
         option3 = request.POST.get('option3')
         option4 = request.POST.get('option4')
         correct_answer = request.POST.get('correct_answer')
+        print("UUUUUUUUUUUUUUUUUUUUUUU",correct_answer)
         marks = request.POST.get('marks')
+        correct_option = None
+        if correct_answer == 'option1':
+            correct_option = option1
+        elif correct_answer == 'option2':
+            correct_option = option2
+        elif correct_answer == 'option3':
+            correct_option = option3
+        elif correct_answer == 'option4':
+            correct_option = option4
+
+        # Print the value of the correct option
+        print("Correct Option:", correct_option)
+
 
         # Create a new AddQuestion instance and save it to the database
         AddQuestion.objects.create(
@@ -1396,7 +1410,7 @@ def addquestion(request):
             option2=option2,
             option3=option3,
             option4=option4,
-            correct_answer=correct_answer,
+            correct_answer=correct_option,
             marks=marks
         )
 
@@ -1408,102 +1422,89 @@ def addquestion(request):
     return render(request, 'addquestion.html', {'courses': courses, 'topics': topics})
 
 
-from django.shortcuts import render, get_object_or_404
-from datetime import datetime, timedelta
-from random import sample
+import random
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect
 from .models import AddTopic, AddQuestion
 
-def start_exam(request, topic_id):
-    # Fetch the topic and questions related to the topic
+def timer_display(request, topic_id):
+    # Get the topic object or return a 404 error if not found
     topic = get_object_or_404(AddTopic, pk=topic_id)
+
+    # Fetch all questions related to the topic and course
     all_questions = AddQuestion.objects.filter(course_name=topic.course, topic_name=topic)
 
-    # Calculate total number of questions and total marks
-    total_questions = topic.total_questions
-    total_marks = topic.total_marks
+    # Shuffle the questions to randomize their order
+    shuffled_questions = list(all_questions)
+    random.shuffle(shuffled_questions)
 
-    # Randomly select the required number of questions from the available set
-    selected_questions = sample(list(all_questions), total_questions)
+    # Retrieve only the required number of questions
+    questions = shuffled_questions[:topic.total_questions]
 
-    # Set duration time to 00 for the exam
-    end_time = datetime.now()
+    if request.method == 'POST':
+        # Retrieve selected answers from the form data
+        submitted_answers = {}
+        for question in questions:
+            answer_key = f'answer_{question.id}'
+            selected_answer = request.POST.get(answer_key)
+            if selected_answer is not None:
+                submitted_answers[question.id] = selected_answer
 
-    # Render the exam timer page with exam details and selected questions
+        # Print selected answers in the console
+        print("Selected Answers:")
+        for question_id, selected_answer in submitted_answers.items():
+            print(f"Question ID: {question_id}, Selected Answer: {selected_answer}")
+
+        # Retrieve correct answers from the database
+        correct_answers = {question.id: question.correct_answer for question in all_questions}
+
+        # Compare selected answers with correct answers
+        score = 0
+        for question_id, selected_answer in submitted_answers.items():
+            if question_id in correct_answers:  # Check if the question has a correct answer
+                if selected_answer == correct_answers[question_id]:
+                    score += all_questions.get(id=question_id).marks  # Increment score by the marks of the question
+
+        # Save the score to session for display on the result page
+        request.session['exam_score'] = score
+        request.session['submitted_answers'] = submitted_answers
+
+        # Redirect to the exam result page
+        return redirect('/exam_result/')  # Example URL
+
+    # Calculate total marks for the exam
+    total_marks = sum(question.marks for question in questions)
+
+    # Duration of the exam in minutes (assuming it's retrieved from the topic or some other source)
+    duration = 120  # Example: 2 hours
+
     return render(request, 'timer_display.html', {
         'topic': topic,
-        'total_questions': total_questions,
         'total_marks': total_marks,
-        'questions': selected_questions,
-        'end_time': end_time,
-        'duration': 0
+        'questions': questions,
+        'duration': duration
     })
+
+
+
+
+
+
+
+def exam_result(request):
+    # This view can handle displaying the exam result
+    # You can implement the logic to fetch the result from the database and pass it to the template
+    # For demonstration purposes, let's assume you have a score stored in a session variable
+    score = request.session.get('exam_score')
+
+    # Render the template with the exam result
+    return render(request, 'exam_result.html', {'score': score})
 
 
 def exams(request):
     # Fetch all topics
     topics = AddTopic.objects.all()
     return render(request, 'exams.html', {'topics': topics})
-
-
-
-
-
-from django.shortcuts import render
-
-def submit_exam(request, id):
-    # Your logic to retrieve exam details based on the id
-    # For example, you might retrieve exam questions, total marks, etc.
-    # Replace this example with your actual logic to fetch exam details
-
-    # Assuming you have a function to fetch exam details based on the id
-    exam_details = get_exam_details_by_id(id)
-
-    # Example exam details (replace this with actual fetched details)
-    topic = exam_details['topic']
-    total_questions = exam_details['total_questions']
-    total_marks = exam_details['total_marks']
-    questions = exam_details['questions']
-    duration = exam_details['duration']
-
-    if request.method == 'POST':
-        # Assuming 'questions' is a list of dictionaries containing question and answer data
-        # Here you can access the POST data and process the exam submission
-        # For example, checking user answers and calculating score
-
-        # Your code to process the exam submission
-        # Replace this example with your actual logic to process exam submission
-
-        correct_count = 0
-        for question in questions:
-            user_answer = request.POST.get('answer_' + str(question['id']))
-            if user_answer == question['correct_answer']:
-                correct_count += 1
-
-        # Calculate percentage
-        percentage = (correct_count / total_questions) * 100
-
-        context = {
-            'total_questions': total_questions,
-            'correct_count': correct_count,
-            'percentage': percentage,
-            # You can pass more data to the template if needed
-        }
-        return render(request, 'exam_result.html', context)
-
-    # If the request method is not POST, render the exam page with the fetched details
-    context = {
-        'topic': topic,
-        'total_questions': total_questions,
-        'total_marks': total_marks,
-        'questions': questions,
-        'duration': duration,
-    }
-    return render(request, 'exam.html', context)
-
-
-
-
-
 
 
 
@@ -1550,4 +1551,36 @@ def prepare_exams(request):
 
 
 
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def submit_exam(request):
+    
+    if request.method == 'POST':
+        total_marks = request.POST.get('total_marks')
+        
+        result = request.POST.get('result')
+        total_marks = int(total_marks)
+        result = int(result)
+        percentage = (result / total_marks) * 100
+        context={'total_marks':total_marks,'result':result,'percentage':percentage}
+        return  render(request,'exam_result.html',context)
+    # if request.method == 'POST':
+    #     # Iterate through each question and compare the selected answer with the correct option value
+    #     for question_id, correct_answer in request.POST.items():
+    #         if question_id.startswith('question_'):  # Check if it's a question field
+    #             question_id = question_id.replace('question_', '')
+    #             selected_answer = request.POST.get(f'answer_{question_id}', None)
+    #             if selected_answer == correct_answer:
+    #                 # Store the correct answer in the database or perform any other desired action
+    #                 # For example, you can save it to a model
+    #                 # CorrectAnswer.objects.create(question_id=question_id, answer=selected_answer)
+    #                 pass
+    #             else:
+    #                 # Handle incorrect answers
+    #                 pass
+    #     return HttpResponse("Exam submitted successfully!")
+    # else:
+    #     return HttpResponse("Invalid request method")
 

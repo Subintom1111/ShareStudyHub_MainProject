@@ -24,9 +24,9 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        h1 {
+        h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         form {
             display: flex;
@@ -51,7 +51,7 @@
         }
         button[type="submit"] {
             width: 50%;
-            background-color: #007bff;
+            background-color: #333;
             color: #fff;
             padding: 10px;
             border: none;
@@ -67,7 +67,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Add Question</h1>
+        <h2>Add Question</h2>
         <form method="post">
             {% csrf_token %}
             <label for="course">Course:</label>
@@ -86,28 +86,68 @@
             </select>
             
             <label for="question_text">Question:</label>
-            <input type="text" id="question_text" name="question_text" maxlength="255" required>
-            <label for="option1">Option 1:</label>
-            <input type="text" id="option1" name="option1" maxlength="100" required>
-            <label for="option2">Option 2:</label>
-            <input type="text" id="option2" name="option2" maxlength="100" required>
-            <label for="option3">Option 3:</label>
-            <input type="text" id="option3" name="option3" maxlength="100" required>
-            <label for="option4">Option 4:</label>
-            <input type="text" id="option4" name="option4" maxlength="100" required>
-            <label for="correct_answer">Correct Answer:</label>
-            <select id="correct_answer" name="correct_answer" required>
-                <option value="" selected disabled>Select correct answer</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-                <option value="option4">Option 4</option>
-            </select>
+<input type="text" id="question_text" name="question_text" maxlength="255" required>
+<label for="option1">Option 1:</label>
+<input type="text" id="option1" name="option1" maxlength="100" required>
+<label for="option2">Option 2:</label>
+<input type="text" id="option2" name="option2" maxlength="100" required>
+<label for="option3">Option 3:</label>
+<input type="text" id="option3" name="option3" maxlength="100" required>
+<label for="option4">Option 4:</label>
+<input type="text" id="option4" name="option4" maxlength="100" required>
+<label for="correct_answer">Correct Answer:</label>
+<select id="correct_answer" name="correct_answer" required>
+    <option value="" selected disabled>Select correct answer</option>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+    <option value="option3">Option 3</option>
+    <option value="option4">Option 4</option>
+</select>
+
+
             <label for="marks">Marks:</label>
-            <input type="number" id="marks" name="marks" min="1" required>
+            <input type="number" id="marks" name="marks" min="1" required><br>
             <button type="submit">Add Question</button>
         </form>
     </div>
     {% endblock body %}
+
+
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get references to the text inputs and the select dropdown
+        const questionText = document.getElementById('question_text');
+        const option1 = document.getElementById('option1');
+        const option2 = document.getElementById('option2');
+        const option3 = document.getElementById('option3');
+        const option4 = document.getElementById('option4');
+        const correctAnswerSelect = document.getElementById('correct_answer');
+    
+        // Add event listeners to the text inputs
+        questionText.addEventListener('input', updateCorrectAnswer);
+        option1.addEventListener('input', updateCorrectAnswer);
+        option2.addEventListener('input', updateCorrectAnswer);
+        option3.addEventListener('input', updateCorrectAnswer);
+        option4.addEventListener('input', updateCorrectAnswer);
+    
+        function updateCorrectAnswer() {
+            // Determine which option is selected based on the input values
+            let selectedOption = '';
+            if (this === option1) {
+                selectedOption = 'option1';
+            } else if (this === option2) {
+                selectedOption = 'option2';
+            } else if (this === option3) {
+                selectedOption = 'option3';
+            } else if (this === option4) {
+                selectedOption = 'option4';
+            }
+    
+            // Set the value of the select dropdown to the selected option
+            correctAnswerSelect.value = selectedOption;
+        }
+    });
+    </script>
 </body>
 </html>

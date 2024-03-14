@@ -1,271 +1,207 @@
-<!-- view_course_notes.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Examination</title>
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <style>
+        /* CSS styles for Examination page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
 
-  <title>ShareStudy Hub Bootstrap Template - Index</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
 
-  <!-- Favicons -->
-  <link href="{% static 'assets/img/favicon.png' %} " rel="icon">
-  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+        .sidebar {
+            flex: 1;
+            padding: 50px;
+            background-color: #333;
+            color: #fff;
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            margin-top: 30px; /* Adjust the margin-top value as needed */
+        }
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+        .sidebar-content {
+            color: #fff;
+            margin-bottom: 30px;
+        }
 
-  <!-- Vendor CSS Files -->
-  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/aos/aos.css" rel="stylesheet' %}">
-  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+        .content {
+            flex: 3;
+            padding: 20px;
+        }
 
-  <!-- Template Main CSS File -->
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+        .content h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
 
-  <!-- =======================================================
-  * Template Name: Mentor
-  * Updated: Sep 18 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+        .questions {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .questions li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 20px;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .questions li p {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .question-marks {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .submit-button {
+            background-color: #333;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
-
-      <h1 class="logo me-auto"><a href="/loginhome">ShareStudy Hub</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="{%static '{% static 'assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="nav-link" href="/loginhome">Home</a></li>
-          {% comment %} <li class="dropdown"><a href="#"><span>Exam</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="#">Examination</a></li>
-              <li><a href="#">Exam Certificate</a></li>
-                
-              </li>
-              
-            </ul>
-          </li>
-          <li><a href="events.html">Notes</a></li> {% endcomment %}
-          {% comment %} <li><a href="{% url 'assignstu_list' %}">Assignments</a></li> {% endcomment %}
-          {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
-          {% comment %} <li><a href="{% url 'submit_feedback' %}">Feedback</a></li>
-          <li><a href="{% url 'view_notifications' %}">Notification</a></li>
-          <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li> {% endcomment %}
-          <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li><br>
-          
-        
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-      <a href="/loginhome" class="get-started-btn">Student Side</a>
-
-    </div>
-  </header><!-- End Header --><br><br><br><br><br>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examination</title>
-    <style>
-    /* Add your CSS styles here */
-    body {
-        font-family: 'Open Sans', sans-serif;
-        background-color: #f2f2f2;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        margin-top: 20px;
-    }
-    .sidebar {
-        flex: 1;
-        padding: 20px;
-        background-color: #007bff;
-        color: #fff;
-        border-top-left-radius: 30px;
-        border-bottom-left-radius: 10px;
-    }
-    .content {
-        flex: 3;
-        padding: 20px;
-    }
-    .content h1 {
-        color: #007bff;
-        margin-bottom: 20px;
-    }
-    .exam-details {
-        margin-bottom: 20px;
-        margin-left: 10px; /* Adjust the left margin */
-        margin-top: 20px; /* Adjust the top margin */
-    }
-    .exam-details h2 {
-        color: #fff;
-        margin-bottom: 10px;
-        border-bottom: 1px solid #fff;
-        padding-bottom: 5px;
-    }
-    .exam-details p {
-        margin: 10px 0;
-        color: #fff;
-    }
-    .timer {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #007bff;
-        position: absolute;
-        top: 20px;
-        right: 20px;
-    }
-
-    .questions {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .questions li {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        margin-bottom: 20px;
-        padding: 20px;
-        position: relative;
-        border-radius: 8px;
-    }
-
-    .questions li p {
-        margin-bottom: 10px;
-        font-size: 18px;
-        color: #333;
-    }
-
-    .question-marks {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-weight: bold;
-        color: black;
-    }
-
-    h2 {
-        font-size: 28px;
-        color: black;
-        border-bottom: 2px solid black;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-
-
-    /* Style for the submit button */
-    .submit-button {
-        background-color: #007bff;
-        color: #fff;
-        padding: 12px 24px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background-color 0.3s ease;
-    }
-    .submit-button:hover {
-        background-color: #0056b3;
-    }
-</style>
-
-</head>
-<body><br>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto"><a href="/loginhome">ShareStudy Hub</a></h1>
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li><a class="nav-link" href="/loginhome">Home</a></li>
+                    <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+            <a href="/loginhome" class="get-started-btn">Student Side</a>
+        </div>
+    </header>
+    <!-- End Header -->
+<br><br><br><br><br>
     <div class="container">
         <div class="sidebar">
             <!-- Display exam details -->
-            <div class="exam-details">
+            <div class="sidebar-content">
                 <h2>Exam Details</h2>
                 <p><strong>Course:</strong> {{ topic.course.name }}</p>
                 <p><strong>Topic:</strong> {{ topic.name }}</p>
-                <p><strong>Number of Questions:</strong> {{ total_questions }}</p>
+                <p><strong>Total Questions:</strong> {{ topic.total_questions }}</p>
                 <p><strong>Total Marks:</strong> {{ total_marks }}</p>
                 <p><strong>Description:</strong> {{ topic.description }}</p>
             </div>
         </div>
         <div class="content">
-            <!-- Display countdown timer -->
-            <h2>Exam Questions</h2>
-            <div class="timer" id="timer">
-                <h1>Exam Timer</h1>
-                <p>Time Left: <span id="timer"></span></p>
-            </div>
             <!-- Display exam questions -->
-            <form method="POST" action="{% url 'submit_exam' %}">
+            <form id="examForm" method="POST" action="{% url 'submit_exam' %}">
                 {% csrf_token %}
                 <div class="questions">
-                    
+                    <input type="hidden" name="total_marks" value="{{ total_marks }}">
+                    <input type="hidden" name="total_questions" value="{{ total_questions }}">
                     <ul>
                         {% for question in questions %}
                         <li>
                             <p>{{ question.question_text }}</p>
                             <span class="question-marks">{{ question.marks }} Marks</span>
-                            <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option1 }}"> {{ question.option1 }}</label><br>
-                            <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option2 }}"> {{ question.option2 }}</label><br>
-                            <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option3 }}"> {{ question.option3 }}</label><br>
-                            <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option4 }}"> {{ question.option4 }}</label><br>
+                            <input type="hidden" name="question_{{ question.id }}" value="{{ question.correct_answer }}">
+                            <input type="hidden" id="marks_{{ question.id }}" name="marks_{{ question.id }}" value="{{ question.marks }}">
+                            <div class="options">
+                                <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option1 }}"> {{ question.option1 }}</label><br>
+                                <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option2 }}"> {{ question.option2 }}</label><br>
+                                <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option3 }}"> {{ question.option3 }}</label><br>
+                                <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.option4 }}"> {{ question.option4 }}</label><br>
+                            </div>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
+                <input type="hidden" id="total_marks" name="result" value="0">
                 <!-- Submit button -->
-                <button type="submit" class="submit-button">Submit Exam</button>
+                <button id="submitExam" type="submit" class="submit-button">Submit Exam</button>
             </form>
+            
+           
         </div>
     </div>
     <script>
-        // Set the duration of the exam from the Django template
-        var duration = {{ duration }}; // Duration in minutes
-
-        // Calculate the end time of the exam
-        var endTime = new Date();
-        endTime.setMinutes(endTime.getMinutes() + duration);
-
-        // Update the countdown timer every second
-        var timerInterval = setInterval(function() {
-            // Get the current time
-            var now = new Date().getTime();
-
-            // Calculate the time difference between now and the end time
-            var timeDifference = endTime - now;
-
-            // Calculate hours, minutes, and seconds
-            var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-            // Display the countdown timer
-            document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
-
-            // If the countdown is finished, display a message
-            if (timeDifference <= 0) {
-                clearInterval(timerInterval);
-                document.getElementById("timer").innerHTML = "Time's up!";
-                // You can also redirect the user or perform any other action here
-            }
-        }, 1000);
+        document.getElementById('submitExam').addEventListener('click', function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+    
+            // Initialize total marks
+            let totalMarks = 0;
+    
+            // Loop through each question
+            {% for question in questions %}
+                // Retrieve the selected answer for the current question
+                const selectedAnswer{{ question.id }} = document.querySelector('input[name="answer_{{ question.id }}"]:checked');
+    
+                // Check if an answer is selected
+                if (selectedAnswer{{ question.id }}) {
+                    // Retrieve the correct answer for the current question
+                    const correctAnswer{{ question.id }} = "{{ question.correct_answer }}";
+    
+                    // Retrieve the selected answer value
+                    const selectedValue{{ question.id }} = selectedAnswer{{ question.id }}.value;
+    
+                    // Compare the selected answer with the correct answer
+                    if (selectedValue{{ question.id }} === correctAnswer{{ question.id }}) {
+                        // If the selected answer is correct, increment total marks
+                        totalMarks += parseInt("{{ question.marks }}");
+                    }
+                }
+            {% endfor %}
+    
+            // Update the value of the total_marks input field
+            document.getElementById('total_marks').value = totalMarks;
+    
+            // Submit the form
+            document.getElementById('examForm').submit();
+        });
     </script>
+    
 </body>
+
 </html>

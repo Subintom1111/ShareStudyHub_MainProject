@@ -91,8 +91,8 @@
             padding: 0;
         }
         .container {
-            max-width: 1000px; /* Increased max-width */
-            margin: 50px auto;
+            max-width: 1300px; /* Increased max-width */
+            margin: 10px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -101,7 +101,7 @@
         }
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         .btn {
             background-color: #28a745; /* Green color */
@@ -126,11 +126,11 @@
             border-bottom: 1px solid #ddd;
         }
         th {
-            background-color: #007bff; /* Blue color */
+            background-color: #333; /* Blue color */
             color: #fff;
         }
         .start-exam-btn {
-            background-color: #007bff; /* Blue color */
+            background-color: #333; /* Blue color */
             color: #fff;
             padding: 8px 16px;
             border: none;
@@ -146,7 +146,7 @@
 </head>
 <body><br><br><br><br>
     <div class="container">
-        <h2>Available Exams</h2>
+        <h2>Available Exam</h2>
 
         <table border="1">
             <thead>
@@ -165,7 +165,7 @@
                     <td>{{ topic.name }}</td> 
                     <td>{{ topic.total_questions }}</td>
                     <td>{{ topic.total_marks }}</td>
-                    <td><button class="start-exam-btn" onclick="location.href='{% url 'start_exam' topic.id %}'">Start Exam</button></td>
+                    <td><button class="start-exam-btn" onclick="location.href='{% url 'timer_display' topic.id %}'">Start Exam</button></td>
                 </tr>
                 {% endfor %}
             </tbody>

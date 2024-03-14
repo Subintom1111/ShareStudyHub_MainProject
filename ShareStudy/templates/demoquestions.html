@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions</title>
+</head>
+<body>
+    <h1>Questions</h1>
+    <ul>
+        {% for question in questions %}
+            <li>
+                <p>{{ question.question_text }}</p>
+                <ul>
+                    <li>{{ question.option1 }}</li>
+                    <li>{{ question.option2 }}</li>
+                    <li>{{ question.option3 }}</li>
+                    <li>{{ question.option4 }}</li>
+                </ul>
+                <p>Correct Answer: {{ question.correct_answer }}</p>
+                <p>Marks: {{ question.marks }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
