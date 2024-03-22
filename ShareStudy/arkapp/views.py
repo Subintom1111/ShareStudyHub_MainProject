@@ -51,7 +51,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 from django.contrib.auth import authenticate, login, get_user_model
 
-
+########################################################################
 #Student Home Page
 def loginhome(request):
     if 'email' in request.session:
@@ -62,14 +62,14 @@ def loginhome(request):
         return redirect('login')
 
 
-
+########################################################################
 @never_cache
 def index(request):
 
     return render(request,'index.html')
 
 
-
+##########################################################################
 # Create your views here.
 
 #Signup Page For Students
@@ -119,7 +119,7 @@ def signup(request):
    return render(request,'signup.html',{'var':var})
             
 
-
+################################################################################
 
 
 def signupteacher(request):
@@ -168,7 +168,7 @@ def signupteacher(request):
 
 
 
-
+####################################################################
    #Login Page  
 def login(request):
     
@@ -201,12 +201,12 @@ def login(request):
     return response
 
 
-
+###################################################################
 def signupteach(request):
             
    return render(request,'signupteach.html')
 
-
+##################################################################
 
 @never_cache
 @login_required(login_url="login")
@@ -215,7 +215,7 @@ def teacherhome(request):
      return render(request,'teacherhome.html')
 
 
-
+####################################################################
 
 def handlelogout(request):
     if request.user.is_authenticated:
@@ -223,12 +223,12 @@ def handlelogout(request):
     return redirect('login')
 
 
-
+##################################################################
 
 def edit_profile(request):
      return render(request,'edit_profile.html')
 
-
+#################################################################
 
 
 def adminreg(request):
@@ -243,7 +243,7 @@ def adminreg(request):
     return render(request, 'admin.html', context)
 
 
-
+###################################################################
 
 
 class ActivateAccountView(View):
@@ -262,7 +262,7 @@ class ActivateAccountView(View):
     
 
 
-
+####################################################################################
 #student
 @never_cache
 @login_required(login_url="login")
@@ -332,7 +332,7 @@ def edit_profile(request):
     else:
         return render(request, 'edit_profile.html', {'user': request.user})
 
-
+#########################################################################
 
 
 #teacher
@@ -399,7 +399,7 @@ def edit_profilete(request):
       
 
 
-
+###########################################################################
 
 #for admin
 def custom_admin_page(request):
@@ -409,14 +409,25 @@ def custom_admin_page(request):
      return render(request, 'admin.html', context)
        
 
+############################################################################
 
+from django.shortcuts import render
+from django.contrib.auth.models import User
 @never_cache
 @login_required(login_url="login")
+
 def adminnew(request):
-    return render(request,'adminnew.html')
+    # Query the User table to count the number of users
+    user_count = User.objects.count()
+    book_count = Product.objects.count()
+    exam_count = AddTopic.objects.count()
+
+    # Pass the user_count to the template context
+    return render(request, 'adminnew.html', {'user_count': user_count, 'book_count': book_count,'exam_count': exam_count})
 
 
 
+#############################################################################
 @never_cache
 @login_required(login_url="login")
 def userview(request):
@@ -429,7 +440,7 @@ def userview(request):
     context = {'User_profiles': users, 'role_filter': role_filter}
     return render(request,'userview.html',context)
 
-
+##########################################################################################
 
 
 
@@ -437,7 +448,7 @@ def userview(request):
 def teacherview(request):
      return render(request,'teacherview.html')
 
-
+#####################################################################
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -628,12 +639,12 @@ from .models import Assignment,Submission
 def assignment_list(request):
     assignments = Assignment.objects.all()
     return render(request, 'assignment_list.html', {'assignments': assignments})
-
+#####################################################################################
 def assignment_detail(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
     submissions = Submission.objects.filter(assignment=assignment)
     return render(request, 'assignment_detail.html', {'assignment': assignment,'submissions':submissions})
-
+######################################################################################
 def create_assignment(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -651,7 +662,7 @@ def create_assignment(request):
         return redirect('assignment_list')
 
     return render(request, 'create_assignment.html')
-
+#####################################################################################
 def update_assignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
 
@@ -668,12 +679,12 @@ def update_assignment(request, assignment_id):
         return redirect('assignment_list')
 
     return render(request, 'update_assignment.html', {'assignment': assignment})
-
+######################################################################################
 def delete_assignment(request, assignment_id):
     assignment = Assignment.objects.get(pk=assignment_id)
     assignment.delete()
     return redirect('assignment_list')
-
+#######################################################################
 
 @never_cache
 @login_required(login_url="login")
@@ -683,7 +694,7 @@ def assignstu_list(request):
     return render(request, 'assignstu_list.html', {'assignments': assignments})
 
 
-
+###########################################################################
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Assignment, Submission
@@ -710,7 +721,7 @@ def submit_assignment(request, assignment_id):
     return render(request, 'submit_assignment.html', {'assignment': assignment})
 
 
-
+##############################################################################
 
 def view_student_names(request, assignment_id):
     submissions = Submission.objects.filter(assignment_id=assignment_id)
@@ -719,12 +730,12 @@ def view_student_names(request, assignment_id):
 
     return render(request, 'view_student_names.html', {'students': students})
 
-
+###################################################################################
 def list_submissions(request):
     # Implement a view for teachers to list submissions
     submissions = Submission.objects.all()
     return render(request, 'list_submissions.html', {'submissions': submissions})
-
+#####################################################################################
 def download_assignment(request, submission_id):
     # Implement a view for teachers to download assignments
     submission = get_object_or_404(Submission, id=submission_id)
@@ -765,7 +776,7 @@ def send_notification(request):
         return redirect('send_notification')  # Redirect to admin dashboard or any desired page
 
     return render(request, 'send_notification.html')
-
+################################################################################
 
 def view_notifications(request):
     # Retrieve notifications for the logged-in student
@@ -776,7 +787,7 @@ def view_notifications(request):
 
     return render(request, 'view_notifications.html', {'notifications': notifications})
 
-
+###################################################################################
 @never_cache
 @login_required(login_url="login")
 def admin_notifications(request):
@@ -810,7 +821,7 @@ def upload_course_notes(request):
         course_notes = CourseNotes( title=title, description=description, pdf_file=pdf_file)
         course_notes.save()
     return render(request, 'upload_course_notes.html')
-
+#########################################################################################
 def download_course_notes(request, notes_id):
     course_notes = get_object_or_404(CourseNotes, pk=notes_id)
     file_path = course_notes.pdf_file.path
@@ -818,14 +829,14 @@ def download_course_notes(request, notes_id):
         response = HttpResponse(file.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{course_notes.pdf_file.name}"'
         return response
-
+#########################################################################################
 def view_course_notes(request):
     course_notes = CourseNotes.objects.all()
     return render(request, 'view_course_notes.html', {'course_notes': course_notes})
 
 
 
-
+############################################################################
 
 
 from django.shortcuts import render, redirect
@@ -871,7 +882,7 @@ def add_product(request):
 
     courses = Courses.objects.all()
     return render(request, 'add_product.html', {'courses': courses})
-
+###########################################################################
 
 # views.py
 
@@ -888,7 +899,7 @@ def adminview_product(request):
     # Pass the products to the template for rendering
     return render(request, 'adminview_product.html', {'products': products})
 
-
+##########################################################################
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.dateparse import parse_date  # Import parse_date
@@ -933,7 +944,7 @@ def edit_product(request, product_id):
     return render(request, 'edit_product.html', {'product': product})
 
 
-
+########################################################################
 
 
 # views.py
@@ -975,7 +986,7 @@ def view_product(request):
 
 # Define other views here...
 
-
+###########################################################################
 
 @never_cache
 @login_required(login_url="login")
@@ -984,7 +995,7 @@ def product_details(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     return render(request, 'product_details.html', {'product': product})
 
-
+##########################################################################
 
 
 @never_cache
@@ -996,7 +1007,7 @@ def product_detailssss(request, product_id):
 
 
 
-
+##########################################################################
 
 
 def add_to_cart(request, product_id):
@@ -1013,7 +1024,7 @@ def add_to_cart(request, product_id):
     else:
         return redirect('view_product.html', product_id=product_id)
 
-
+############################################################################
 @never_cache
 @login_required(login_url="login")
 def cart_page(request):
@@ -1202,6 +1213,8 @@ def payment(request, product_id):
 
 from .models import Thread
 
+
+
 def messages_page(request):
     threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
     context = {
@@ -1211,6 +1224,8 @@ def messages_page(request):
 
 
 
+@never_cache
+@login_required(login_url="login")
 def AptitudeTestCo(request):
     courses = AptitudeTestCourse.objects.all()
     return render(request, 'AptitudeTestCo.html',{'courses': courses})
@@ -1227,9 +1242,14 @@ def delete_Co(request, topic_id):
     return render(request, 'AptitudeTestCo.html', {'courses': courses})
 
 
+
+
 from django.shortcuts import render, redirect
 from .models import AptitudeTestCourse
 
+
+@never_cache
+@login_required(login_url="login")
 def AptitudeTestCourses(request):
     
     if request.method == 'POST':
@@ -1241,6 +1261,9 @@ def AptitudeTestCourses(request):
     
     return render(request, 'AptitudeTestCourse.html')
 
+
+@never_cache
+@login_required(login_url="login")
 def Top(request):
     topics = AddTopic.objects.all()
     return render(request, 'AddTo.html',{'topics': topics})
@@ -1264,6 +1287,9 @@ def delete_topic(request, topic_id):
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import AddTopic
 
+
+@never_cache
+@login_required(login_url="login")
 def edit_topic(request, topic_id):
     topic = get_object_or_404(AddTopic, pk=topic_id)
     
@@ -1283,6 +1309,9 @@ def edit_topic(request, topic_id):
 from django.shortcuts import render, redirect
 from .models import AptitudeTestCourse, AddTopic
 
+
+@never_cache
+@login_required(login_url="login")
 def Topic(request):
     topics = AddTopic.objects.all()
     if request.method == 'POST':
@@ -1326,7 +1355,8 @@ def Topic(request):
         courses = AptitudeTestCourse.objects.all()
         return render(request, 'AddTopic.html', {'courses': courses})
 
-
+@never_cache
+@login_required(login_url="login")
 def AvailableExams(request):
     topics = AddTopic.objects.all()
     return render(request, 'AvailableExams.html',{'topics': topics})
@@ -1346,7 +1376,8 @@ def delete_exam(request, topic_id):
 
 from django.shortcuts import render, get_object_or_404
 from .models import AddQuestion, AddTopic
-
+@never_cache
+@login_required(login_url="login")
 def questions(request, topic_id):
     # Fetch the topic object based on the topic_id
     topic = get_object_or_404(AddTopic, pk=topic_id)
@@ -1373,7 +1404,11 @@ def delete_question(request, question_id):
 
 from django.shortcuts import render, redirect
 from .models import AptitudeTestCourse, AddTopic, AddQuestion
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@never_cache
+@login_required(login_url="login")
 def addquestion(request):
     if request.method == 'POST':
         # Retrieve form data from the POST request
@@ -1385,8 +1420,19 @@ def addquestion(request):
         option3 = request.POST.get('option3')
         option4 = request.POST.get('option4')
         correct_answer = request.POST.get('correct_answer')
-        print("UUUUUUUUUUUUUUUUUUUUUUU",correct_answer)
         marks = request.POST.get('marks')
+
+        # Get the total marks for the topic
+        total_marks = AddTopic.objects.get(id=topic_id).total_marks
+
+        # Ensure that the marks for the question do not exceed the total marks for the topic
+        if int(marks) > total_marks:
+            error_message = "Marks for the question cannot be more than the total marks for the topic."
+            courses = AptitudeTestCourse.objects.all()
+            topics = AddTopic.objects.all()
+            return render(request, 'addquestion.html', {'courses': courses, 'topics': topics, 'error_message': error_message})
+
+        # Convert correct_answer to option format
         correct_option = None
         if correct_answer == 'option1':
             correct_option = option1
@@ -1396,10 +1442,6 @@ def addquestion(request):
             correct_option = option3
         elif correct_answer == 'option4':
             correct_option = option4
-
-        # Print the value of the correct option
-        print("Correct Option:", correct_option)
-
 
         # Create a new AddQuestion instance and save it to the database
         AddQuestion.objects.create(
@@ -1422,11 +1464,15 @@ def addquestion(request):
     return render(request, 'addquestion.html', {'courses': courses, 'topics': topics})
 
 
+
 import random
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from .models import AddTopic, AddQuestion
 
+
+@never_cache
+@login_required(login_url="login")
 def timer_display(request, topic_id):
     # Get the topic object or return a 404 error if not found
     topic = get_object_or_404(AddTopic, pk=topic_id)
@@ -1490,7 +1536,8 @@ def timer_display(request, topic_id):
 
 
 
-
+@never_cache
+@login_required(login_url="login")
 def exam_result(request):
     # This view can handle displaying the exam result
     # You can implement the logic to fetch the result from the database and pass it to the template
@@ -1500,7 +1547,8 @@ def exam_result(request):
     # Render the template with the exam result
     return render(request, 'exam_result.html', {'score': score})
 
-
+@never_cache
+@login_required(login_url="login")
 def exams(request):
     # Fetch all topics
     topics = AddTopic.objects.all()
@@ -1566,21 +1614,8 @@ def submit_exam(request):
         percentage = (result / total_marks) * 100
         context={'total_marks':total_marks,'result':result,'percentage':percentage}
         return  render(request,'exam_result.html',context)
-    # if request.method == 'POST':
-    #     # Iterate through each question and compare the selected answer with the correct option value
-    #     for question_id, correct_answer in request.POST.items():
-    #         if question_id.startswith('question_'):  # Check if it's a question field
-    #             question_id = question_id.replace('question_', '')
-    #             selected_answer = request.POST.get(f'answer_{question_id}', None)
-    #             if selected_answer == correct_answer:
-    #                 # Store the correct answer in the database or perform any other desired action
-    #                 # For example, you can save it to a model
-    #                 # CorrectAnswer.objects.create(question_id=question_id, answer=selected_answer)
-    #                 pass
-    #             else:
-    #                 # Handle incorrect answers
-    #                 pass
-    #     return HttpResponse("Exam submitted successfully!")
-    # else:
-    #     return HttpResponse("Invalid request method")
+  
+
+
+
 
