@@ -1617,5 +1617,46 @@ def submit_exam(request):
   
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from datetime import datetime
+from .models import OnlineClass, Courses
 
+@login_required
+def online_class(request):
+    var = Courses.objects.all()  # Fetch all courses
+    if request.method == 'POST':
+        course_name = request.POST.get('course_name')
+        start_time_str = request.POST.get('start_time')
+        end_time_str = request.POST.get('end_time')
+        class_link = request.POST.get('class_link')
+        
+        # Convert string time to datetime objects
+        start_time = datetime.strptime(start_time_str, "%Y-%m-%dT%H:%M")
+        end_time = datetime.strptime(end_time_str, "%Y-%m-%dT%H:%M")
+        
+        # Save the submitted data into the database
+        OnlineClass.objects.create(
+            course_name=course_name,
+            start_time=start_time,
+            end_time=end_time,
+            class_link=class_link,
+            teacher=request.user
+        )
+        
+        return redirect('online_class')  # Redirect to a page showing all online classes
+        
+    return render(request, 'online_class.html', {'courses': var})
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import OnlineClass
+
+def online_class_view(request):
+    # Fetch all online classes from the database
+    online_classes = OnlineClass.objects.all()
+    return render(request, 'online_class_view.html', {'online_classes': online_classes})
 

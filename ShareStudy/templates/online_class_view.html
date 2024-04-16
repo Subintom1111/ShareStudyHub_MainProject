@@ -1,4 +1,3 @@
-<!-- view_course_notes.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +50,7 @@
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a class="nav-link" href="/loginhome">Home</a></li>
+          <li><a class="nav-link" href="loginhome">Home</a></li>
           {% comment %} <li class="dropdown"><a href="#"><span>Exam</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Examination</a></li>
@@ -62,11 +61,11 @@
             </ul>
           </li>
           <li><a href="events.html">Notes</a></li> {% endcomment %}
-          {% comment %} <li><a href="{% url 'assignstu_list' %}">Assignments</a></li> {% endcomment %}
-          {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
-          {% comment %} <li><a href="{% url 'submit_feedback' %}">Feedback</a></li>
           <li><a href="{% url 'view_notifications' %}">Notification</a></li>
-          <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li> {% endcomment %}
+          {% comment %} <li><a href="contact.html">Online Class </a></li> {% endcomment %}
+          <li><a href="{% url 'view_course_notes' %}">Notes</a></li>
+          <li><a href="{% url 'submit_feedback' %}">Feedback</a></li>
+          <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
           <li><a class="nav-link" href="{% url 'handlelogout' %}" id="logout-link">Logout</a></li><br>
           
         
@@ -76,100 +75,142 @@
       <a href="/loginhome" class="get-started-btn">Student Side</a>
 
     </div>
-  </header><!-- End Header --><br><br><br><br><br>
+  </header><!-- End Header -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Topics</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Online Classes</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
         }
+
         .containers {
-            max-width: 1300px; /* Increased max-width */
-            margin: 10px auto;
+            max-width: 1000px;
+            margin: 20px auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 8px;
+            border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
             text-align: center;
         }
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .btn {
-            background-color: #28a745; /* Green color */
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-        .btn:hover {
-            background-color: #218838; /* Darker green color */
-        }
+
         table {
+            width: 100%;
             border-collapse: collapse;
-            width: 100%; /* Adjusted width to 100% */
             margin-top: 20px;
         }
-        th, td {
-            padding: 15px; /* Increased padding */
-            border-bottom: 1px solid #ddd;
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
         }
+
         th {
-            background-color: #333; /* Blue color */
-            color: #fff;
-        }
-        .start-exam-btn {
-            background-color: #333; /* Blue color */
-            color: #fff;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
             font-size: 14px;
-            transition: background-color 0.3s ease;
         }
-        .start-exam-btn:hover {
-            background-color: #0056b3; /* Darker blue color */
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styling for add online class form */
+        .containers form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .containers form label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .containers form input[type="datetime-local"],
+        .containers form select,
+        .containers form input[type="url"],
+        .containers form input[type="submit"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .containers form input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .containers form input[type="submit"]:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
-<body><br><br><br><br>
-    <div class="containers">
-        <h2>Available Exam</h2>
 
-        <table border="1">
+<body>
+    <div class="containers">
+        <br><br><br><br>
+        <center>
+            <h1>Online Classes</h1>
+        </center>
+        <table>
             <thead>
                 <tr>
-                    <th>Course Name</th>
-                    <th>Topic Name</th>
-                    <th>Total Questions</th>
-                    <th>Total Marks</th>
-                    <th>Actions</th>
+                    <th>Course No</th>
+                    <th>Teacher</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Class Link</th>
                 </tr>
             </thead>
             <tbody>
-                {% for topic in topics %}
+                {% for online_class in online_classes %}
                 <tr>
-                    <td>{{ topic.course.name }}</td>
-                    <td>{{ topic.name }}</td> 
-                    <td>{{ topic.total_questions }}</td>
-                    <td>{{ topic.total_marks }}</td>
-                    <td><button class="start-exam-btn" onclick="location.href='{% url 'timer_display' topic.id %}'">Start Exam</button></td>
+                    <td>{{ online_class.course_name }}</td>
+                    <td>{{ online_class.teacher.first_name }} {{ online_class.teacher.last_name }}</td>
+                    <td>{{ online_class.start_time }}</td>
+                    <td>{{ online_class.end_time }}</td>
+                    <td><a href="{{ online_class.class_link }}" target="_blank">{{ online_class.class_link }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    
 </body>
+
 </html>

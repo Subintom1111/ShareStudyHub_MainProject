@@ -248,3 +248,14 @@ class AddQuestion(models.Model):
     
 
 
+class OnlineClass(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    course_name = models.CharField(max_length=100)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    class_link = models.URLField()
+
+    def __str__(self):
+        return f"Class for {self.course_name} by {self.teacher.username} from {self.start_time} to {self.end_time}"
+    
+    
