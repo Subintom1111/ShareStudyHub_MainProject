@@ -27,7 +27,6 @@ admin.site.register(ChatMessage),
 admin.site.register(AptitudeTestCourse),
 admin.site.register(AddTopic),
 admin.site.register(AddQuestion),
-admin.site.register(OnlineClass),
 
 class ChatMessage(admin.TabularInline):
     model = ChatMessage
