@@ -368,13 +368,6 @@
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="http://127.0.0.1:8000/view_course">
-                                        <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.form-components.main">Assigned Teacher</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
                                 
                             </ul>
 
@@ -413,38 +406,31 @@
                                 <li class="pcoded-hasmenu">
                                     <a href="javascript:void(0)">
                                         <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
-                                        <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">Aptitude Exam</span>
+                                        <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">Knowledge Exam</span>
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                     <ul class="pcoded-submenu">
-                                        <li class=" ">
-                                            <a href="http://127.0.0.1:8000/AptitudeTestCo/">
+                                        {% comment %} <li class=" ">
+                                            <a href="http://127.0.0.1:8000/exammarkset">
                                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Add Course</span>
+                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Quiz</span>
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
                                         </li>
                                         <li class=" ">
-                                            <a href="http://127.0.0.1:8000/AddTo/">
+                                            <a href="http://127.0.0.1:8000/examdetails">
                                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Add Topic</span>
+                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Exam Details</span>
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
                                         </li>
                                         <li class=" ">
-                                            <a href="http://127.0.0.1:8000/AvailableExams/">
+                                            <a href="sample-page.html">
                                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Available Exam</span>
+                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Sample Page</span>
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a href="http://127.0.0.1:8000/addquestion/">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Add Questions</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
+                                        </li> {% endcomment %}
                                     </ul>
                                 </li>
                                 
@@ -518,31 +504,27 @@
                                                 <div class="card widget-card-1">
                                                     <div class="card-block-small">
                                                         <i class="icofont icofont-pie-chart bg-c-blue card1-icon"></i>
-                                                        <span class="text-c-blue f-w-600">Users</span>
-                                                        <h4>{{ user_count }}</h4>
+                                                        <span class="text-c-blue f-w-600">Student</span>
+                                                        <h4>4</h4>
                                                         <div>
-                                                            <!-- Add the link here -->
                                                             <span class="f-left m-t-10 text-muted">
-                                                            <a href="http://127.0.0.1:8000/userview" class="text-c-blue f-16 icofont icofont-warning m-r-10"></i> Get more space</a><br><br>
+                                                                <i class="text-c-blue f-16 icofont icofont-warning m-r-10"></i>Get more space
                                                             </span>
-                                                                
-                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
                                             <!-- card1 end -->
                                             <!-- card1 start -->
                                             <div class="col-md-6 col-xl-3">
                                                 <div class="card widget-card-1">
                                                     <div class="card-block-small">
                                                         <i class="icofont icofont-pie-chart bg-c-blue card1-icon"></i>
-                                                        <span class="text-c-blue f-w-600">Ecommerce Book Store</span>
-                                                        <h4>{{ book_count }}</h4>
+                                                        <span class="text-c-blue f-w-600">Ecommerce Store</span>
+                                                        <h4>4</h4>
                                                         <div>
                                                             <span class="f-left m-t-10 text-muted">
-                                                            <a href="http://127.0.0.1:8000/adminview_product" class="text-c-blue f-16 icofont icofont-warning m-r-10"></i> Get more Books from Here!!!!!</a><br><br>
+                                                                <i class="text-c-blue f-16 icofont icofont-warning m-r-10"></i>Get more Books from Here!!!!!
                                                             </span>
                                                         </div>
                                                     </div>
@@ -570,11 +552,11 @@
                                                 <div class="card widget-card-1">
                                                     <div class="card-block-small">
                                                         <i class="icofont icofont-warning-alt bg-c-green card1-icon"></i>
-                                                        <span class="text-c-green f-w-600">Aptitude Examinations</span>
-                                                        <h4>{{ exam_count }}</h4>
+                                                        <span class="text-c-green f-w-600">Examination</span>
+                                                        <h4>4</h4>
                                                         <div>
                                                             <span class="f-left m-t-10 text-muted">
-                                                                <a href="http://127.0.0.1:8000/AvailableExams/" class="text-c-green f-16 icofont icofont-tag m-r-10"></i>All Exams!!!!!</a><br><br>
+                                                                <i class="text-c-green f-16 icofont icofont-tag m-r-10"></i>Tracked via microsoft
                                                             </span>
                                                         </div>
                                                     </div>
@@ -582,7 +564,20 @@
                                             </div>
                                             <!-- card1 end -->
                                             <!-- card1 start -->
-                                            
+                                            <div class="col-md-6 col-xl-3">
+                                                <div class="card widget-card-1">
+                                                    <div class="card-block-small">
+                                                        <i class="icofont icofont-social-twitter bg-c-yellow card1-icon"></i>
+                                                        <span class="text-c-yellow f-w-600">Followers</span>
+                                                        <h4>+562</h4>
+                                                        <div>
+                                                            <span class="f-left m-t-10 text-muted">
+                                                                <i class="text-c-yellow f-16 icofont icofont-refresh m-r-10"></i>Just update
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!-- card1 end -->
                                             <!-- Statestics Start -->
                                            <!-- <div class="col-md-12 col-xl-8">

@@ -97,7 +97,7 @@
                 <label for="id_course">Course:</label>
                 <select name="course" class="form-control" id="id_course" required>
                     <option value="" selected disabled>Select a Course</option>
-                    {% for course in courses %}
+                    {% for course in var %}
                         <option value="{{ course.id }}">{{ course.course_name }}</option>
                     {% endfor %}
                 </select>

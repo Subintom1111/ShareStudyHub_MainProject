@@ -4,44 +4,43 @@
     
 
 {% block styles %}
-        <style>
+           <style>
             table {
-                width: 100%;
+                width: 70%;
                 border-collapse: collapse;
-                margin-top: 20px;
-                margin-left: 300px; /* Adjust the left margin as needed */
+                margin-left: 280px;
             }
-            
+        
             th, td {
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
+                border: 1px solid #ddd;
+                padding: 12px;
                 text-align: left;
             }
-
+        
             th {
                 background-color: #333;
                 color: #fff;
             }
-
+        
             tr:nth-child(even) {
                 background-color: #f2f2f2;
             }
-
+        
             /* Reduce padding and font size for email cell */
             td:nth-child(2) {
                 padding: 8px; /* Adjust the padding size as needed */
                 font-size: 14px; /* Adjust the font size as needed */
             }
-
+        
             .filter-container {
                 text-align: center;
                 margin: 20px 0;
             }
-
+        
             select {
                 padding: 8px;
             }
-
+        
             button {
                 padding: 8px 16px;
                 background-color: #333;
@@ -50,7 +49,6 @@
                 cursor: pointer;
             }
         </style>
-
         {% endblock styles %}
         {% block body %}<br><br><br>
      
