@@ -61,7 +61,7 @@ urlpatterns = [
     path('download/<int:notes_id>/', download_course_notes, name='download_course_notes'),
 
     path('prepare_exam/', views.prepare_exams, name='prepare_exam'),
-    path('questions/<int:pk>/', views.questions, name='questions'),
+    
     path('add_product', views.add_product, name='add_product'),
     path('adminview_product', views.adminview_product, name='adminview_product'),
     path('edit_product/<int:product_id>/', views.edit_product, name='edit_product'),
@@ -78,6 +78,27 @@ urlpatterns = [
     path('payment/<int:product_id>/', views.payment, name='payment'),
     path('payment/<int:product_id>/success', views.success, name='success'),
     path('chat/', views.messages_page, name='messages_page'),
+    path('AptitudeTestCo/', views.AptitudeTestCo, name='AptitudeTestCo'),
+    path('AptitudeTestCourse/', views.AptitudeTestCourses, name='AptitudeTestCourses'),
+    path('AddTo/', views.Top, name='AddTo'),
+    path('edit_topic/<int:topic_id>/', views.edit_topic, name='edit_topic'),
+    path('delete_topic/<int:topic_id>/', views.delete_topic, name='delete_topic'),
+    path('AddTopic/', views.Topic, name='AddTopic'),
+    path('AvailableExams/', views.AvailableExams, name='AvailableExams'),
+    path('delete_exam/<int:topic_id>/', views.delete_exam, name='delete_exam'),
+    path('questions/<int:topic_id>/', views.questions, name='questions'),
+    path('addquestion/', views.addquestion, name='addquestion'),
+    path('delete-question/<int:question_id>/', views.delete_question, name='delete_question'),
+    path('exams/', views.exams, name='exams'),
+    path('timer_display/<int:topic_id>/', views.timer_display, name='timer_display'),
+    path('exam_result/', views.exam_result, name='exam_result'),
+    path('submit_exam/', views.submit_exam, name='submit_exam'),
+    path('online_class/', views.online_class, name='online_class'),
+    path('online_class_view/', views.online_class_view, name='online_class_view'),
+    
+
+    
+
 ]
 
 

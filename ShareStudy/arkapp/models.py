@@ -58,13 +58,22 @@ class Courses(models.Model):
 
 
 
-
+from textblob import TextBlob
 from django.db import models
 
 class Feedback(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)  # Assuming you have a User model
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    sentiment_rating = models.FloatField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Calculate sentiment rating using textblob
+        blob = TextBlob(self.message)  # Corrected variable name
+        self.sentiment_rating = blob.sentiment.polarity
+        super().save(*args, **kwargs)  # Removed non-printable character
+
+
 
 
 
@@ -198,3 +207,55 @@ class ChatMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+
+class AptitudeTestCourse(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+    
+
+class AddTopic(models.Model):
+    course = models.ForeignKey(AptitudeTestCourse, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    total_questions = models.IntegerField()
+    total_marks = models.IntegerField()
+    duration = models.IntegerField()  # Duration in minutes
+    live_test = models.CharField(max_length=3, choices=[('Yes', 'Yes'), ('No', 'No')])
+
+    def __str__(self):
+        return self.name
+    
+
+from django.db import models
+
+class AddQuestion(models.Model):
+    course_name = models.ForeignKey(AptitudeTestCourse, on_delete=models.CASCADE)
+    topic_name = models.ForeignKey(AddTopic, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=255)
+    option1 = models.CharField(max_length=100)
+    option2 = models.CharField(max_length=100)
+    option3 = models.CharField(max_length=100)
+    option4 = models.CharField(max_length=100)
+    correct_answer = models.CharField(max_length=100)
+    marks = models.IntegerField()
+
+    def __str__(self):
+        return self.question_text
+    
+
+
+class OnlineClass(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    course_name = models.CharField(max_length=100)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    class_link = models.URLField()
+
+    def __str__(self):
+        return f"Class for {self.course_name} by {self.teacher.username} from {self.start_time} to {self.end_time}"
+    
+    
